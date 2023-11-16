@@ -7,10 +7,12 @@ import {
 import HomeClient from "../pages/Client/Home/Home";
 
 import HomeAdmin from "../pages/Admin/Home/Page";
-
-import Login from "../auth/Login";
-import Cookies from "js-cookie";
-
+import { useAuth0 } from '@auth0/auth0-react';
+//import Login from "../auth/Login";
+//import Cookies from "js-cookie";
+import Convocatoria from "../pages/Admin/Convocatoria/Page";
+import Page_Eleccion from "../pages/Admin/Eleccion/Page";
+import Create_Eleccion from "../pages/Admin/Eleccion/Sub/Create_Eleccion";
 import Page_elecc from "../pages/Admin/Elecc/Page";
 import Page_Frente from "../pages/Admin/Frente/Page";
 import Page_Comite from "../pages/Admin/Comite/Page";
@@ -20,25 +22,29 @@ import Page_Estudiantes from "../pages/Admin/participantes/Estudiantes/Page";
 import Page_Docentes from "../pages/Admin/participantes/Docentes/Page";
 
 export const AppRouter = () => {
-  const authToken = Cookies.get("token");
+  //const authToken = Cookies.get("token");
+  const { isAuthenticated } = useAuth0();
   return (
     <Router>
       <Routes>
         <Route path="/" element={<HomeClient />} />
         <Route
           path="/login"
-          element={authToken ? <Navigate to="/admin" /> : <Login />}
+          //element={authToken ? <Navigate to="/admin" /> : <Login />}
         />
-        <Route path="/admin" element={<HomeAdmin />} />
-        <Route path="/admin/elecc" element={<Page_elecc />} />
-        <Route path="/admin/frente" element={<Page_Frente />} />
-        <Route path="/admin/comite" element={<Page_Comite />} />
-        <Route path="/admin/comite/create" element={<Create_Comite />} />
-        <Route path="/Admin/participantes/Docentes" element={<Page_Docentes />} />
-        <Route path="/Admin/participantes/Estudiantes" element={<Page_Estudiantes />} />
-        <Route path="/Admin/participantes/Jurado" element={<Page_Mesa />} />
-      </Routes>
-      <Routes>
+        {/**/}<Route
+          path="/admin/eleccion"
+          element={isAuthenticated ? <Page_Eleccion /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/admin/eleccion/create"
+          element={isAuthenticated ? <Create_Eleccion /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/admin/convocatoria"
+          element={isAuthenticated ? <Convocatoria /> : <Navigate to="/" />}
+        />
+        <Route path="/admin" element={<HomeAdmin />} />        
         <Route
           path="/admin/elecc"
           element={isAuthenticated ? <Page_elecc /> : <Navigate to="/" />}
@@ -47,6 +53,10 @@ export const AppRouter = () => {
           path="/admin/frente" 
           element={isAuthenticated ? <Page_Frente /> : <Navigate to="/"/>} 
         />
+        <Route
+          path="/admin/frente"
+          element={isAuthenticated ? <Page_Frente /> : <Navigate to="/" />}
+        />        
         <Route 
           path="/admin/comite" 
           element={isAuthenticated ? <Page_Comite /> : <Navigate to="/"/>} 
@@ -55,7 +65,19 @@ export const AppRouter = () => {
           path="/admin/comite/create" 
           element={isAuthenticated ? <Create_Comite /> : <Navigate to="/"/>} 
         />
+        <Route 
+          path="/Admin/participantes/Docentes" 
+          element={isAuthenticated ? <Page_Docentes />: <Navigate to="/"/>} 
+        />
+        <Route 
+          path="/Admin/participantes/Estudiantes" 
+          element={isAuthenticated ? <Page_Estudiantes />: <Navigate to="/"/>} 
+        />
+        <Route 
+          path="/Admin/participantes/Jurado" 
+          element={isAuthenticated ?<Page_Mesa />: <Navigate to="/"/>} 
+        />
       </Routes>
-    </Router>
+          </Router>
   );
 };
