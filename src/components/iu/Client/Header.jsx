@@ -8,9 +8,9 @@ import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
-
+import { LoginButton } from "./Buttonreg";
 import MenuItem from "@mui/material/MenuItem";
-import { Link } from "react-router-dom";
+//import { Link } from "react-router-dom";
 
 const pages = ["Inicio", "Noticias", "Nosotros"];
 
@@ -78,11 +78,12 @@ function Header() {
               ))}
             </Box>
             <Box flex={1} display="flex" justifyContent="flex-end">
-              <Link to="/admin">
+              {/*<Link to="/admin">
                 <Button variant="text" sx={{ color: "white" }}>
                   Iniciar sesión
                 </Button>
-              </Link>
+                </Link>*/}
+                <LoginButton />
             </Box>
           </Box>
           <Box display={{ xs: "flex", md: "none" }}>
