@@ -12,8 +12,10 @@ import Login from "../auth/Login";
 import Cookies from "js-cookie";
 
 import Page_elecc from "../pages/Admin/Elecc/Page";
+import Page_Eleccion from "../pages/Admin/Eleccion/Page";
 import Page_Frente from "../pages/Admin/Frente/Page";
 import Page_Comite from "../pages/Admin/Comite/Page";
+import Create_Eleccion from "../pages/Admin/Eleccion/Sub/Create_Eleccion";
 import Create_Comite from "../pages/Admin/Comite/Sub/Create_comite";
 import Page_Mesa from "../pages/Admin/participantes/Jurado/Page";
 import Page_Estudiantes from "../pages/Admin/participantes/Estudiantes/Page";
@@ -30,15 +32,17 @@ export const AppRouter = () => {
           element={authToken ? <Navigate to="/admin" /> : <Login />}
         />
         <Route path="/admin" element={<HomeAdmin />} />
+        <Route path="/admin/eleccion" element={<Page_Eleccion />} />
         <Route path="/admin/elecc" element={<Page_elecc />} />
         <Route path="/admin/frente" element={<Page_Frente />} />
         <Route path="/admin/comite" element={<Page_Comite />} />
         <Route path="/admin/comite/create" element={<Create_Comite />} />
+        <Route path="/admin/eleccion/create" element={<Create_Eleccion />} />
         <Route path="/Admin/participantes/Docentes" element={<Page_Docentes />} />
         <Route path="/Admin/participantes/Estudiantes" element={<Page_Estudiantes />} />
         <Route path="/Admin/participantes/Jurado" element={<Page_Mesa />} />
       </Routes>
-      <Routes>
+      {/* <Routes>
         <Route
           path="/admin/elecc"
           element={isAuthenticated ? <Page_elecc /> : <Navigate to="/" />}
@@ -55,7 +59,7 @@ export const AppRouter = () => {
           path="/admin/comite/create" 
           element={isAuthenticated ? <Create_Comite /> : <Navigate to="/"/>} 
         />
-      </Routes>
+      </Routes> */}
     </Router>
   );
 };

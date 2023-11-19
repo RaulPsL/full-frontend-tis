@@ -22,7 +22,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import SaveIcon from "@mui/icons-material/Save";
 import CancelIcon from "@mui/icons-material/Cancel";
-import { getApiConv, getApiFrente, getApiUsuarios, postCandidatos, putApiUsuarioCand } from "../../api/api";
+import { getApiConv, getApiFrente, getApiUsuarios, postCandidatos, putConvFrente } from "../../api/api";
 function FormEleccion() {
   const [frente, setFrente] = useState("");
   const [frentes, setFrentes] = useState([]);
@@ -36,18 +36,12 @@ function FormEleccion() {
   const [usuarios, setUsuarios] = useState([]);
   const [id_usuario, setIdUsuario] = useState(0);
   const [list_candidato, setList_Candidato] = useState([]);
-  let i = 0;
 
   const handleChangeFrente = (event) => {
     setFrente(event.target.value);
   };
 
   const handleAgregarCandidato = () => {
-    let intervalId;
-    intervalId = setInterval(()=>{
-      buscarIdUsuario(formData.nombreCandidato, intervalId);
-    }, 1000);
-    
     const nuevoCandidato = {
       ID_USUARIO: id_usuario,
       ID_FRENTE: buscarIdFrente(frente),
@@ -76,8 +70,11 @@ function FormEleccion() {
     setConvocatoria(event.target.value);
   };
 
-  const handleNombreCandidatoChange = (event) => {
-    setFormData({ ...formData, nombreCandidato: event.target.value });
+  const handleNombreCandidatoChange = (newValue) => {
+    console.log("Nombre del candidato: ", newValue.NOMBRE_USUARIO);
+    const result = buscarIdUsuario(newValue.NOMBRE_USUARIO);
+    setIdUsuario(result);
+    setFormData({ ...formData, nombreCandidato: newValue.NOMBRE_USUARIO });
   };
 
   const handleCargoCandidatoChange = (event) => {
@@ -112,30 +109,20 @@ function FormEleccion() {
 
   //Aun no se esta ejecutando
   const handleSubmit = () => {
-    candidatos.shift();
-    const temp = JSON.stringify(candidatos);
+    let temp = JSON.stringify(candidatos);
+    console.log("Estructura candidatos: ", temp);
     postCandidatos('', temp);
+    temp = JSON.stringify({
+      ID_CONVOCATORIA:convocatorias.find((convo) => convo.NOMBRE_CONVOCATORIA === convocatoria).ID_CONVOCATORIA
+    });
+    console.log("Estructura relacion frente: ", temp);
+    const id_frente = buscarIdFrente(frente);
+    console.log("Frente id: ", id_frente);
+    putConvFrente('', id_frente, temp);
   };
 
-  const buscarIdUsuario = (param, interval) => {
-    const usuario_select = usuarios.map((usuario)=>{return `${usuario.NOMBRE_USUARIO} ${usuario.APELLIDO_USUARIO}`;}).
-                                    find((item) => item === param).split(' ');
-    if(usuario_select !== null){
-      clearInterval(interval);
-      const datos_usuario = {
-        NOMBRE_USUARIO : usuario_select[0],
-        APELLIDO_USUARIO : usuario_select.slice(1).join(" "),
-      }
-      const fetchData = async () => {
-        try {
-          const result = await putApiUsuarioCand(datos_usuario);
-          setIdUsuario(result[0].ID_USUARIO);
-        } catch (error) {
-          console.log('Error fetching data: ', error);
-        }
-      }
-      fetchData();
-    }
+  const buscarIdUsuario = (param) => {
+    return usuarios.find((usuario) => usuario.NOMBRE_USUARIO === param).ID_USUARIO;
   }
   const buscarIdFrente = (param) => {
     const frente_select = frentes.find((item) => item.NOMBRE_FRENTE === param);
@@ -164,8 +151,8 @@ function FormEleccion() {
         setFrentes(result);
         console.log(frentes);
         result = await getApiUsuarios();
+        result = nuevo_arreglo_con_nombres(result)
         setUsuarios(result);
-        setUsuarios(nuevo_arreglo_con_nombres(usuarios));
         console.log(convocatorias);
       } catch (error) {
         console.log('Error fetching data: ', error);
@@ -187,8 +174,6 @@ function FormEleccion() {
               onChange={handleConvocatoriaChange}
             >
               { convocatorias.map((convocatoria, index) => {
-                
-                console.log("Convocatoria => "+String(i+1)+" ", convocatoria);
                 return <MenuItem key={index} value={convocatoria.NOMBRE_CONVOCATORIA}>
                             {convocatoria.NOMBRE_CONVOCATORIA}
                         </MenuItem>;
@@ -202,13 +187,10 @@ function FormEleccion() {
             id="Facultad"
             label={ 
               convocatoria !== "" ? 
-              convocatorias.map(
-                (convo) => {
-                  if(convo.NOMBRE_CONVOCATORIA.toUpperCase() === convocatoria.toUpperCase()){
-                    return /*convo.relacion_fc.map((facultad, facKey) => (facultad.NOMBRE_FACULTAD))*/ "Faultades";
-                  }
-                }
-              ):'Facultad' }
+              convocatorias.find((item) => 
+                      item.NOMBRE_CONVOCATORIA.toUpperCase() === convocatoria.toUpperCase()
+                      ).relacion_fc.map((facultad) => 
+                          (`${facultad.facultad.NOMBRE_FACULTAD}\n`)):'Facultad' }
               variant="outlined"
               onChange={(e) =>
                 setFormData({ ...formData, Facultad: e.target.value })
@@ -274,10 +256,10 @@ function FormEleccion() {
             <h2>Agregar Candidato</h2>
             <FormControl fullWidth variant="outlined">
               <Autocomplete
-                id={`nuevo-usuario-autocomplete-${usuarios}`}
+                id={`nuevo-usuario-autocomplete-${usuarios.ID_USUARIO}`}
                 options={usuarios}
-                //value={nuevoUsuario}
-                //onChange={(event, newValue) => setNuevoUsuario(newValue)}
+                value={formData.nombreCandidato}
+                onChange={(event, value) => handleNombreCandidatoChange(value)}
                 getOptionLabel={(usuario) => usuario.NOMBRE_USUARIO}
                 renderInput={(params) => (
                   <TextField {...params} label="Nuevo Usuario" fullWidth />

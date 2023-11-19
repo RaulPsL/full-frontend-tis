@@ -4,7 +4,6 @@ import { Button, Grid, Typography } from "@mui/material";
 import { containerChartStyles } from "../Home/utils/HomeStyles";
 import Table_User from "../../../hooks/Table/Table_User";
 import { boletaPDF } from "../../../api/api"
-import {boletaPDF} from "../../../api/api"
 
 import { Link } from "react-router-dom";
 import { getApiConv } from "../../../api/api";
