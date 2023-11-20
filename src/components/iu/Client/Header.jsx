@@ -8,11 +8,10 @@ import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
-import { LoginButton } from "./Buttonreg";
 import MenuItem from "@mui/material/MenuItem";
-//import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
-const pages = ["Inicio", "Noticias", "Nosotros"];
+const pages = ["Inicio", "Noticias"];
 
 function Header() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -63,29 +62,53 @@ function Header() {
                 />
               </Typography>
             </Box>
-            <Box flex={2} display="flex" justifyContent="center">
-              {pages.map((page) => (
-                <Button
-                  key={page}
-                  onClick={handleCloseNavMenu}
-                  sx={{
-                    color: "#f3efff",
-                    mx: 2,
-                  }}
-                >
-                  {page}
+            <Box
+              flex={2}
+              display="flex"
+              justifyContent="center"
+              sx={{ marginLeft: "auto" }} // Mueve el contenido al lado derecho
+            >
+              <Link to="/">
+                <Button variant="text" sx={{ color: "white" }}>
+                  Inicio
                 </Button>
-              ))}
+              </Link>
+              <Link to="/convocatorias">
+                <Button variant="text" sx={{ color: "white" }}>
+                  convocatorias
+                </Button>
+              </Link>
+              <Link to="/comite">
+                <Button variant="text" sx={{ color: "white" }}>
+                  Comite
+                </Button>
+              </Link>
+              <Link to="/jurado">
+                <Button variant="text" sx={{ color: "white" }}>
+                  Jurado
+                </Button>
+              </Link>
+              <Link to="/habilitados">
+                <Button variant="text" sx={{ color: "white" }}>
+                  Habilitados
+                </Button>
+              </Link>
             </Box>
-            <Box flex={1} display="flex" justifyContent="flex-end">
-              {/*<Link to="/admin">
+
+            <Box
+              flex={1}
+              display="flex"
+              justifyContent="flex-end"
+              sx={{ marginLeft: "auto" }} // Mueve el contenido al lado derecho
+            >
+              <Link to="/admin">
                 <Button variant="text" sx={{ color: "white" }}>
                   Iniciar sesión
                 </Button>
-                </Link>*/}
-                <LoginButton />
+              </Link>
             </Box>
           </Box>
+
           <Box display={{ xs: "flex", md: "none" }}>
             <IconButton
               size="large"
