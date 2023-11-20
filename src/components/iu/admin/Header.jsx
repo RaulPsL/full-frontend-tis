@@ -21,7 +21,9 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
-
+import { LogoutButton } from "../Client/Buttonlogout";
+import { useAuth0 } from '@auth0/auth0-react'; 
+import {  useState } from 'react';
 const Header = ({
   open,
   handleDrawerOpen,
@@ -31,9 +33,8 @@ const Header = ({
 }) => {
   const navigate = useNavigate();
   const handleLogout = () => {
-    Cookies.remove("token");
-    // window.location.reload();
-    navigate("/login");
+    Cookies.remove("token");  
+    navigate("/");
   };
   const handleChange = (event) => {
     onModeChange(event.target.checked);
@@ -46,8 +47,16 @@ const Header = ({
     background: "#242526",
     color: "white",
   };
+  const { user, isAuthenticated } = useAuth0();
 
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [userProfileImage, setUserProfileImage] = useState(null);
+
+  React.useEffect(() => {
+    if (isAuthenticated) {
+      setUserProfileImage(user.picture);
+    }
+  }, [isAuthenticated, user]);
 
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
@@ -56,6 +65,7 @@ const Header = ({
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
   return (
     <AppBar
       position="fixed"
@@ -142,12 +152,15 @@ const Header = ({
             }
             label={mode ? "Dia" : "Noche"}
           />
+          <Typography>
+            {isAuthenticated && <span>{user.name || 'User'}</span>}
+          </Typography>
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar
-                  alt="Remy Sharp"
-                  src="https://www.shareicon.net/data/512x512/2016/05/24/770137_man_512x512.png"
+              <Avatar
+                  alt="User Avatar"
+                  src={userProfileImage || 'URL_DE_LA_IMAGEN_POR_DEFECTO'}
                 />
               </IconButton>
             </Tooltip>
@@ -168,7 +181,7 @@ const Header = ({
               onClose={handleCloseUserMenu}
             >
               <MenuItem key="Logout" onClick={handleLogout}>
-                <Typography textAlign="center">salir</Typography>
+                <LogoutButton />
               </MenuItem>
             </Menu>
           </Box>
@@ -177,6 +190,7 @@ const Header = ({
     </AppBar>
   );
 };
+
 Header.propTypes = {
   open: PropTypes.bool.isRequired,
   handleDrawerOpen: PropTypes.func.isRequired,

@@ -4,7 +4,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import CardsHome from "./utils/CardsHome";
 import { ChartsHome } from "./utils/ChartsHome";
 import { MoreHome } from "./utils/MoreHome";
-
+import { styled } from "@mui/material/styles";
 // import ChartsHome from "./helps/ChartsHome";
 
 const Home = () => {
