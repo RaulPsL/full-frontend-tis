@@ -5,7 +5,6 @@ import { containerChartStyles } from "../Home/utils/HomeStyles";
 import Table_User from "../../../hooks/Table/Table_User";
 import { boletaPDF } from "../../../api/api"
 
-
 import { Link } from "react-router-dom";
 import { getApiConv } from "../../../api/api";
 import AddIcon from "@mui/icons-material/Add";

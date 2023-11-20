@@ -14,8 +14,10 @@ import Convocatoria from "../pages/Admin/Convocatoria/Page";
 import Page_Eleccion from "../pages/Admin/Eleccion/Page";
 import Create_Eleccion from "../pages/Admin/Eleccion/Sub/Create_Eleccion";
 import Page_elecc from "../pages/Admin/Elecc/Page";
+import Page_Eleccion from "../pages/Admin/Eleccion/Page";
 import Page_Frente from "../pages/Admin/Frente/Page";
 import Page_Comite from "../pages/Admin/Comite/Page";
+import Create_Eleccion from "../pages/Admin/Eleccion/Sub/Create_Eleccion";
 import Create_Comite from "../pages/Admin/Comite/Sub/Create_comite";
 import Page_Mesa from "../pages/Admin/participantes/Jurado/Page";
 import Page_Estudiantes from "../pages/Admin/participantes/Estudiantes/Page";
@@ -81,11 +83,6 @@ export const AppRouter = () => {
           path="/Admin/participantes/Jurado"
           element={isAuthenticated ? <Page_Mesa /> : <Navigate to="/" />}
         />
-        <Route path="/jurado" element={<Jurado />} />
-        <Route path="/comite" element={<Comite />} />
-        <Route path="/convocatorias" element={<Convocatorias />} />
-        <Route path="/habilitados" element={<Habilitados />} />
-      </Routes>
     </Router>
   );
 };

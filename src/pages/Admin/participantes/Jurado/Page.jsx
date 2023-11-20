@@ -5,7 +5,7 @@ import { containerChartStyles } from "../../Home/utils/HomeStyles";
 import ButtonProducts from "../../../../hooks/utils/Button";
 
 import Drawer from "../../../../hooks/Drawer/Drawer";
-import { getApiConv, getApiElecc, getApiFac, getApiJurado } from "../../../../api/api";
+import { getApiConv, getApiJurado } from "../../../../api/api";
 import Form_Jurado from "../../../../hooks/Forms/Form_Jurado";
 import ViewMesasEleccion from "../../../../hooks/Table/Table_Jurado";
 
@@ -17,7 +17,6 @@ const Page_Mesa = () => {
   const [convocatoria, setConvocatoria] = useState("");
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [edit, setedit] = useState(false);
-  const [elecciones, setElecciones] = useState([]);
   const [jurados, setJurados] = useState([]);
   
 
@@ -45,9 +44,7 @@ const Page_Mesa = () => {
   useEffect(() => {
     const fetchData = async () => {
         try {
-          let result = await getApiElecc();
-          setElecciones(result);
-          result = await getApiConv();
+          let result = await getApiConv();
           setConvocatorias(result);
           result = await getApiJurado();
           setJurados(result);
@@ -79,15 +76,10 @@ const Page_Mesa = () => {
                 onChange={handleConvocatoriaChange}
                 sx={{ width: "100%", top:"12px" }}
               >
-                { elecciones.map((eleccion) => {
-                  return eleccion.relacion_eleccconvo.map((convocatoria, index) => {
-                    if (String(convocatoria.ACTIVO).toUpperCase() === 'ACTIVO'){
-                      return <MenuItem key={index} value={convocatoria.NOMBRE_CONVOCATORIA}>
-                                {convocatoria.NOMBRE_CONVOCATORIA}
-                              </MenuItem>;
-                    }else{
-                      return null;
-                    }})
+                { convocatorias.map((convocatoria, index) => {
+                  return <MenuItem key={index} value={convocatoria.NOMBRE_CONVOCATORIA}>
+                            {convocatoria.NOMBRE_CONVOCATORIA}
+                          </MenuItem>;
                 })}
               </Select>
               <ButtonProducts

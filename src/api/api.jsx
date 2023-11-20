@@ -137,7 +137,7 @@ export const getApiConv = async () => {
 export const getApiJurado = async () => {
   try {
     const response = await axios.get(
-      `http://localhost:8000/api/jurados`
+      `http://localhost:8000/api/mesas`
     );
 
     return response.data;
@@ -302,6 +302,41 @@ export const putEditMiembro = async (route, id, formData) => {
   try {
     const response = await axios.post(
       `http://127.0.0.1:8000/api/postmiembrocomite/${id}`,
+      formData, // JSON data
+      {
+        headers: {
+          "Content-Type": "application/json", // Set the content type to JSON
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error al guardar el producto:", error);
+    throw error;
+  }
+};
+
+export const deleteMiembro = async (id) => {
+  try {
+    const response = await axios.delete(
+      `http://127.0.0.1:8000/api/deletemiembro/${id}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error al eliminar el producto:", error);
+    throw error;
+  }
+};
+
+export const putConvFrente = async (route, id, formData) => {
+  try {
+    const response = await axios.put(
+      `http://127.0.0.1:8000/api/updatefrente/${id}`,
       formData, // JSON data
       {
         headers: {

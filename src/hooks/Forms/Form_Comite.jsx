@@ -24,19 +24,26 @@ import EditIcon from "@mui/icons-material/Edit";
 import SaveIcon from "@mui/icons-material/Save";
 import CancelIcon from "@mui/icons-material/Cancel";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { getApiConv, getApiDocentes } from "../../api/api";
+import { deleteMiembro, getApiConv, getApiDocentes, postMiembro, putEditMiembro } from "../../api/api";
 
 const FormComite = () => {
   const [selectedConvocatoria, setSelectedConvocatoria] = useState("");
   const [nuevoUsuario, setNuevoUsuario] = useState(null);
   const [usuariosAgregados, setUsuariosAgregados] = useState({});
   const [usuarios, setusuarios] = useState([]);
-  const [id, setId] = useState(0);
-
+  const [id_convocatoria, setId_Convocatoria] = useState(0);
+  const [id_usuario, setId_usuario] = useState(0);
   const [convocatorias, setConvocatorias] = useState([]);
 
   const handleAddUser = (facultad, newUser) => {
-    const userWithDefaultEstado = { ...newUser, estado: "Vocal Titular" };
+    let result = usuarios.find((usuario) => usuario.NOMBRE_USUARIO === newUser.NOMBRE_USUARIO).ID_USUARIO;
+    setId_usuario(result);
+    result = convocatorias.find((convocatoria) => convocatoria.NOMBRE_CONVOCATORIA === selectedConvocatoria).ID_CONVOCATORIA;
+    setId_Convocatoria(result);
+
+    console.log(usuariosAgregados);
+    console.log(newUser);
+    const userWithDefaultEstado = { ...newUser, ESTADO: "Vocal Titular" };
 
     setUsuariosAgregados((prevUsers) => {
       const updatedUsers = { ...prevUsers };
@@ -47,8 +54,13 @@ const FormComite = () => {
       return updatedUsers;
     });
     setNuevoUsuario(null);
-
-
+    const data = JSON.stringify({
+      ID_USUARIO:id_usuario,
+      ID_CONVOCATORIA:id_convocatoria,
+      ESTADO: userWithDefaultEstado.ESTADO
+    });
+    console.log(data);
+    postMiembro('', data);
   };
 
   const handleDeleteUser = (facultad, userName) => {
@@ -59,25 +71,13 @@ const FormComite = () => {
       );
       return updatedUsers;
     });
+
+    let result = usuarios.find((usuario) => usuario.NOMBRE_USUARIO === userName).ID_USUARIO;
+    deleteMiembro(result);
   };
 
   const [editState, setEditState] = useState({});
   const [editedUser, setEditedUser] = useState(null);
-
-  function shuffle(array) {
-    const shuffledArray = [...array];
-    for (let i = shuffledArray.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [shuffledArray[i], shuffledArray[j]] = [
-        shuffledArray[j],
-        shuffledArray[i],
-      ];
-    }
-    return shuffledArray;
-  }
-
-
-  const personas = shuffle(usuarios).slice(0, usuarios.length-1);
 
   const handleConvocatoriaChange = (event) => {
     setusuarios(nuevo_arreglo_con_nombres(usuarios));
@@ -85,7 +85,8 @@ const FormComite = () => {
     setUsuariosAgregados({});
     setNuevoUsuario(null);
     if(selectedConvocatoria !== ""){
-      setId(convocatorias.find((convocatoria) => convocatoria.NOMBRE_CONVOCATORIA === event.target.value).ID_CONVOCATORIA);
+      let result = convocatorias.find((convocatoria) => convocatoria.NOMBRE_CONVOCATORIA === event.target.value).ID_CONVOCATORIA
+      setId_Convocatoria(result);
     }
   };
 
@@ -97,7 +98,7 @@ const FormComite = () => {
     });
 
     const facultyUsers = usuariosAgregados[facultad] || [];
-    const userToEdit = facultyUsers.find((user) => user.nombre === userName);
+    const userToEdit = facultyUsers.find((user) => user.NOMBRE_USUARIO === userName);
 
     setEditedUser({ ...userToEdit });
   };
@@ -111,15 +112,22 @@ const FormComite = () => {
 
     const facultyUsers = usuariosAgregados[facultad] || [];
     const editedIndex = facultyUsers.findIndex(
-      (user) => user.nombre === oldName
+      (user) => user.NOMBRE_USUARIO === oldName
     );
 
     if (editedIndex !== -1) {
       facultyUsers[editedIndex] = editedUser;
-      facultyUsers[editedIndex].nombre = editedUser.nombre;
-      facultyUsers[editedIndex].estado = editedUser.estado;
+      facultyUsers[editedIndex].NOMBRE_USUARIO = editedUser.NOMBRE_USUARIO;
+      facultyUsers[editedIndex].ESTADO = editedUser.ESTADO;
     }
     setEditedUser(null);
+    let result = usuarios.find((usuario) => usuario.NOMBRE_USUARIO === oldName).ID_USUARIO;
+    let data = JSON.stringify({
+      ID_USUARIO:id_usuario,
+      ID_CONVOCATORIA:id_convocatoria,
+      ESTADO: editedUser.ESTADO
+    });
+    putEditMiembro('', result, data);
   };
 
   const handleCancel = (facultad) => {
@@ -146,6 +154,7 @@ const FormComite = () => {
         setConvocatorias(result);
         console.log(convocatorias);
         result = await getApiDocentes();
+        result = nuevo_arreglo_con_nombres(result);
         setusuarios(result);
         console.log(usuarios);
       } catch (error) {
@@ -166,10 +175,10 @@ const FormComite = () => {
               <Grid item xs={10}>
                 <Autocomplete
                   id={`nuevo-usuario-autocomplete-${facultad}`}
-                  options={personas}
+                  options={usuarios}
                   value={nuevoUsuario}
                   onChange={(event, newValue) => setNuevoUsuario(newValue)}
-                  getOptionLabel={(persona) => persona.NOMBRE_USUARIO}
+                  getOptionLabel={(usuario) => usuario.NOMBRE_USUARIO}
                   renderInput={(params) => (
                     <TextField {...params} label="Nuevo Usuario" fullWidth />
                   )}
@@ -202,15 +211,15 @@ const FormComite = () => {
                     <TableRow key={userIndex}>
                       <TableCell>{userIndex + 1}</TableCell>
                       <TableCell>
-                        {editState[facultad] === user.nombre ? (
+                        {editState[facultad] === user.NOMBRE_USUARIO ? (
                           <Autocomplete
                             id={`nuevo-usuario-autocomplete-${facultad}`}
-                            options={personas}
+                            options={usuarios}
                             value={editedUser}
                             onChange={(event, newValue) =>
                               setEditedUser(newValue)
                             }
-                            getOptionLabel={(personas) => personas.NOMBRE_USUARIO}
+                            getOptionLabel={(usuario) => usuario.NOMBRE_USUARIO}
                             renderInput={(params) => (
                               <TextField
                                 {...params}
@@ -220,10 +229,10 @@ const FormComite = () => {
                             )}
                           />
                         ) : (
-                          user.nombre
+                          user.NOMBRE_USUARIO
                         )}
                       </TableCell>
-                      <TableCell>{user.cargo}</TableCell>
+                      <TableCell>{user.cargo.NOMBRE_CARGO}</TableCell>
                       <TableCell>
                         {editState[facultad] === user.nombre ? (
                           <Select
@@ -231,7 +240,7 @@ const FormComite = () => {
                             onChange={(e) => {
                               setEditedUser((prevState) => ({
                                 ...prevState,
-                                estado: e.target.value,
+                                ESTADO: e.target.value,
                               }));
                             }}
                           >
@@ -247,19 +256,19 @@ const FormComite = () => {
                         )}
                       </TableCell>
                       <TableCell>
-                        {editState[facultad] === user.nombre ? (
+                        {editState[facultad] === user.NOMBRE_USUARIO ? (
                           <div>
                             <IconButton color="primary">
                               <SaveIcon
                                 onClick={() =>
-                                  handleSave(facultad, user.nombre)
+                                  handleSave(facultad, user.NOMBRE_USUARIO)
                                 }
                               />
                             </IconButton>
                             <IconButton color="secondary">
                               <CancelIcon
                                 onClick={() =>
-                                  handleCancel(facultad, user.nombre)
+                                  handleCancel(facultad, user.NOMBRE_USUARIO)
                                 }
                               />
                             </IconButton>
@@ -267,14 +276,14 @@ const FormComite = () => {
                         ) : (
                           <IconButton color="primary">
                             <EditIcon
-                              onClick={() => handleEdit(facultad, user.nombre)}
+                              onClick={() => handleEdit(facultad, user.NOMBRE_USUARIO)}
                             />
                           </IconButton>
                         )}
                         <IconButton
                           color="secondary"
                           onClick={() =>
-                            handleDeleteUser(facultad, user.nombre)
+                            handleDeleteUser(facultad, user.NOMBRE_USUARIO)
                           }
                         >
                           <DeleteIcon />

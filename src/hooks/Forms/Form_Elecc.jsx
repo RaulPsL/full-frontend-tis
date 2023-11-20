@@ -13,7 +13,7 @@ import {
 
 import { postFrente } from "../../api/api";
 
-const Form_Elecc = ({ onClose, edit }) => {
+const Form_Elecc = ({ onClose }) => {
   const [formData, setFormData] = useState({
     name: "",
     estado: "Activo", // Set "Activo" as the default estado
@@ -32,8 +32,8 @@ const Form_Elecc = ({ onClose, edit }) => {
 
     try {
       const dataToSend = {
-        name: formData.name,
-        estado: formData.estado,
+        TIPO_ELECCION: formData.name,
+        ACTIVO: formData.estado,
       };
 
       const jsonData = JSON.stringify(dataToSend);
