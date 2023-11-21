@@ -17,6 +17,8 @@ import {
   TableHead,
   TableRow,
   Paper,
+  RadioGroup,
+  Radio,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
@@ -26,7 +28,7 @@ import { DateRangePicker } from "@mui/x-date-pickers-pro/DateRangePicker";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import AddCircleRoundedIcon from "@mui/icons-material/AddCircleRounded";
 import PlusOneRoundedIcon from "@mui/icons-material/PlusOneRounded";
-import { getApiConv, getApiFac, postConv } from "../../api/api";
+import { getApiElecc, getApiFac, postConv } from "../../api/api";
 
 const Form_Convocatoria = ({ onClose, edit }) => {
   const [formData, setFormData] = useState({
@@ -40,14 +42,13 @@ const Form_Convocatoria = ({ onClose, edit }) => {
   });
 
   const [requerimientos, setRequerimientos] = useState([]);
-
   const [facultades, setfacultades] = useState([]);
-
+  const [facultad, setfacultad] = useState("");
   const [elecciones, setelecciones] = useState([]);
-
   const [selectedFacultad, setSelectedFacultad] = useState("");
-  // eslint-disable-next-line no-unused-vars
-  const [selectedCarrera, setSelectedCarrera] = useState("");
+  const [selectedCarreras, setSelectedCarreras] = useState([]);
+  const [test, settest] = useState(false);
+  const [eleccion, seteleccion] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -55,16 +56,37 @@ const Form_Convocatoria = ({ onClose, edit }) => {
       ...formData,
       [name]: value,
     });
-
-    if (name === "facultad") {
-      setSelectedFacultad(value);
-      setSelectedCarrera("");
-    }
-    if (name === "carrera") {
-      setSelectedCarrera(value);
-    }
+    
   };
 
+  const handleFacultadChange = (e) => {
+    e.preventDefault();
+    setfacultad(e.target.value);
+  }
+
+  const handleEleccionChange = (e) => {
+    e.preventDefault();
+    seteleccion(e.target.value);
+    
+  }
+
+  const ObtenerCarreras = (e) => {
+    if(eleccion.toLocaleLowerCase() && facultad !== ""){
+      return (
+        <RadioGroup>
+          {/**
+          * {facultades.find((item) => item.NOMBRE_FACULTAD === facultad).carrera.map(
+          *  (carrera, keyCarr) => (
+          *    <RadioButton key={ keyCarr }>
+          *      carrera.NOMBRE_CARRERA
+          *    </RadioButton>
+          * )}
+          * )
+          */}
+        </RadioGroup>
+      );
+    }
+  }
   const handleAgregarRequerimiento = () => {
     if (formData.nuevoRequerimiento) {
       setRequerimientos([...requerimientos, formData.nuevoRequerimiento]);
@@ -121,7 +143,7 @@ const Form_Convocatoria = ({ onClose, edit }) => {
       try {
         let result = await getApiFac();
         setfacultades(result);
-        result = await getApiConv();
+        result = await getApiElecc();
         setelecciones(result);
       } catch (error) {
         console.log('Error fetching data: ', error);
@@ -178,7 +200,7 @@ const Form_Convocatoria = ({ onClose, edit }) => {
                 label="Tipo de elección"
                 name="tipo"
                 value={formData.tipo}
-                onChange={handleChange}
+                onChange={handleEleccionChange}
                 inputProps={{
                   name: "tipo",
                   id: "tipo_eleccion",

@@ -68,7 +68,6 @@ const Page_Mesa = () => {
               >
                 {name}
               </Typography>
-
               <Select
                 value={convocatoria}
                 label="Seleccionar Convocatoria"
@@ -108,6 +107,7 @@ const Page_Mesa = () => {
             <Form_Jurado
               onClose={closeDrawer}
               edit={edit}
+              convocatorias = { convocatorias }
             />
           }
         />
