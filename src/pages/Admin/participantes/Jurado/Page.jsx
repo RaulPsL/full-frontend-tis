@@ -5,7 +5,7 @@ import { containerChartStyles } from "../../Home/utils/HomeStyles";
 import ButtonProducts from "../../../../hooks/utils/Button";
 
 import Drawer from "../../../../hooks/Drawer/Drawer";
-import { getApiConv, getApiJurado } from "../../../../api/api";
+import { deleteJurado, getApiConv, getApiJurado } from "../../../../api/api";
 import Form_Jurado from "../../../../hooks/Forms/Form_Jurado";
 import ViewMesasEleccion from "../../../../hooks/Table/Table_Jurado";
 
@@ -18,8 +18,6 @@ const Page_Mesa = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [edit, setedit] = useState(false);
   const [jurados, setJurados] = useState([]);
-  
-
   const [radio, setradio] = useState(false);
 
   const handleConvocatoriaChange = (event) => {
@@ -40,6 +38,10 @@ const Page_Mesa = () => {
   const handleChange = () => {
     setradio(!radio);
   };
+
+  const changeJurado = async (id_jurado) => {
+    deleteJurado(id_jurado);
+  }
   
   useEffect(() => {
     const fetchData = async () => {
@@ -68,6 +70,7 @@ const Page_Mesa = () => {
               >
                 {name}
               </Typography>
+
               <Select
                 value={convocatoria}
                 label="Seleccionar Convocatoria"
@@ -92,7 +95,12 @@ const Page_Mesa = () => {
         <Grid item xs={12} md={12} lg={12}>
           <Grid container style={containerChartStyles}>
             <Grid item xs={12}>
-              <ViewMesasEleccion convocatorias={ convocatorias } jurados={ jurados } nombre_convocatoria= { convocatoria } />
+              <ViewMesasEleccion 
+                convocatorias={ convocatorias } 
+                jurados={ jurados } 
+                nombre_convocatoria= { convocatoria }
+                changeJurado={ changeJurado }
+                />
             </Grid>
           </Grid>
         </Grid>
@@ -106,8 +114,7 @@ const Page_Mesa = () => {
           form={
             <Form_Jurado
               onClose={closeDrawer}
-              edit={edit}
-              convocatorias = { convocatorias }
+              convocatorias={ convocatorias }
             />
           }
         />

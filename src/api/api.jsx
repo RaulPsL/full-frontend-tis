@@ -334,6 +334,23 @@ export const putEditMiembro = async (route, id, formData) => {
   }
 };
 
+export const deleteJurado = async (id) => {
+  try {
+    const response = await axios.delete(
+      `http://127.0.0.1:8000/api/deletejurado/${id}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error al eliminar el producto:", error);
+    throw error;
+  }
+};
+
 export const deleteMiembro = async (id) => {
   try {
     const response = await axios.delete(

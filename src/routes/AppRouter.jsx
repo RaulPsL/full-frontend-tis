@@ -58,6 +58,10 @@ export const AppRouter = () => {
           element={isAuthenticated ? <Page_Frente /> : <Navigate to="/" />}
         />
         <Route
+          path="/admin/frente"
+          element={isAuthenticated ? <Page_Frente /> : <Navigate to="/" />}
+        />
+        <Route
           path="/admin/comite"
           element={isAuthenticated ? <Page_Comite /> : <Navigate to="/" />}
         />
@@ -78,27 +82,22 @@ export const AppRouter = () => {
           element={isAuthenticated ? <Page_Mesa /> : <Navigate to="/" />}
         />
         <Route
-          path="/convocatorias"
-          element={<Convocatorias /> }
+          path="/jurado"
+          element={isAuthenticated ? <Jurado /> : <Navigate to="/" />}
         />
-        <Route path="/admin" element={<HomeAdmin />} />
         <Route
           path="/comite"
-          element={<Comite /> }
-        />
-        <Route
-          path="/jurado"
-          element={<Jurado /> }
+          element={isAuthenticated ? <Comite /> : <Navigate to="/" />}
         />
         <Route
           path="/habilitados"
-          element={<Habilitados /> }
+          element={isAuthenticated ? <Habilitados /> : <Navigate to="/" />}
         />
         <Route
-          path="/admin/comite"
-          element={isAuthenticated ? <Page_Comite /> : <Navigate to="/" />}
+          path="/convocatorias"
+          element={isAuthenticated ? <Convocatorias /> : <Navigate to="/" />}
         />
-      </Routes>
+        </Routes>
     </Router>
   );
 };

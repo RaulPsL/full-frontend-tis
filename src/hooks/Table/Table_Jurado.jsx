@@ -1,7 +1,8 @@
-import { Typography, Card, Avatar, CardContent, Container, Grid, TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
+import { Typography, Card, Avatar, CardContent, Container, Grid, Button, TableContainer, TableHead, TableCell, TableRow, TableBody, Table } from '@mui/material';
+import DeleteIcon from "@mui/icons-material/Delete";
 import PropTypes from 'prop-types';
 
-const ViewMesasEleccion = ({ convocatorias, nombre_convocatoria, jurados }) => {
+const ViewMesasEleccion = ({ convocatorias, nombre_convocatoria, jurados, changeJurado }) => {
 
   return (
     <Container>
@@ -32,13 +33,22 @@ const ViewMesasEleccion = ({ convocatorias, nombre_convocatoria, jurados }) => {
                                   >
                                     {carrera.NOMBRE_CARRERA}
                                   </Typography>
-                                  
+                                  <TableContainer>
+                                    <TableHead>
+                                      <TableRow>
+                                        <TableCell>Mesa</TableCell>
+                                        <TableCell>Rango de Apellidos</TableCell>
+                                        <TableCell>Jurados</TableCell>
+                                      </TableRow>
+                                    </TableHead>
+                                  <TableBody>
                                   <CardContent >
                                     {
                                       jurados.map((mesa, indexM) => {
                                         
                                         if(carrera.ID_CARRERA === mesa.ID_CARRERA){
                                           let i = 1;
+
                                           return  <div key={indexM} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center',margin:"10px" }}>
                                                     <TableContainer>
                                                       <Table>
@@ -77,6 +87,7 @@ const ViewMesasEleccion = ({ convocatorias, nombre_convocatoria, jurados }) => {
                                                                                   <TableCell>Cargo jurado</TableCell>
                                                                                   <TableCell>Cargo</TableCell>
                                                                                   <TableCell>CI</TableCell>
+                                                                                  <TableCell></TableCell>
                                                                                 </TableRow>
                                                                               </TableHead>
                                                                             </Table>
@@ -102,6 +113,11 @@ const ViewMesasEleccion = ({ convocatorias, nombre_convocatoria, jurados }) => {
                                                                                 {jurado.relacion_uj.CI_USUARIO}
                                                                             </Typography>
                                                                             </TableCell>
+                                                                            <TableCell>
+                                                                            <Button size="sm" variant="soft" color="danger" onClick={ () => changeJurado(jurado.ID_JURADO) }>
+                                                                                  <DeleteIcon fontSize="inherit" /> 
+                                                                                </Button>
+                                                                            </TableCell>
                                                                           </TableBody>
                                                                         </Card>
                                                                 
@@ -112,11 +128,12 @@ const ViewMesasEleccion = ({ convocatorias, nombre_convocatoria, jurados }) => {
                                                       </Table>
                                                     </TableContainer>
                                                   </div>
-                                            
                                         }
                                       })
                                     }
                                   </CardContent>
+                                </TableBody>
+                                </TableContainer>
                                 </Card>
                               </Grid>)
                             })}
@@ -134,6 +151,7 @@ ViewMesasEleccion.propTypes = {
   convocatorias: PropTypes.array.isRequired,
   nombre_convocatoria: PropTypes.string.isRequired,
   jurados: PropTypes.array.isRequired,
+  changeJurado: PropTypes.func.isRequired
 }
 
 export default ViewMesasEleccion;
