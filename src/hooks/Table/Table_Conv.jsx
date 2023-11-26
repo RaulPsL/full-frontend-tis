@@ -110,13 +110,13 @@ export default function Table_Conv({ convocatoria }) {
                           justifyContent: "center",
                         }}
                       >
-                        <Button size="sm" variant="plain" color="neutral">
+                        <Button size="sm" variant="plain" color="neutral" onClick={ generarPDF }>
                           <PictureAsPdfIcon fontSize="inherit" /> {/* Ajusta el tamaño */}
                         </Button>
                         <Button size="sm" variant="soft" color="danger">
                           <EditIcon fontSize="inherit" /> {/* Ajusta el tamaño */}
                         </Button>
-                        <Button size="sm" variant="soft" color="danger" onClick={ generarPDF }>
+                        <Button size="sm" variant="soft" color="danger">
                           <DeleteIcon fontSize="inherit" /> {/* Ajusta el tamaño */}
                         </Button>
                       </Box>

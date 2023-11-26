@@ -280,6 +280,24 @@ export const postFrente = async (route, formData) => {
   }
 };
 
+export const postJurado = async (route, formData) => {
+  try {
+    const response = await axios.post(
+      `http://127.0.0.1:8000/api/randomJurado`,
+      formData, // JSON data
+      {
+        headers: {
+          "Content-Type": "application/json", // Set the content type to JSON
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error al guardar el producto:", error);
+    throw error;
+  }
+};
+
 export const postMiembro = async (route, formData) => {
   try {
     const response = await axios.post(
@@ -312,6 +330,23 @@ export const putEditMiembro = async (route, id, formData) => {
     return response.data;
   } catch (error) {
     console.error("Error al guardar el producto:", error);
+    throw error;
+  }
+};
+
+export const deleteJurado = async (id) => {
+  try {
+    const response = await axios.delete(
+      `http://127.0.0.1:8000/api/deletejurado/${id}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error al eliminar el producto:", error);
     throw error;
   }
 };

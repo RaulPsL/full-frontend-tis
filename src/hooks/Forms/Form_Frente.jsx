@@ -8,50 +8,16 @@ import {
   Button,
   InputLabel,
   Select,
-  MenuItem,
-  Typography,
-  IconButton, // Agregado
+  MenuItem
 } from "@mui/material";
-import { Label, Clear } from "@mui/icons-material"; // Agregado
 import { postFrente } from "../../api/api";
 
-const Form_Frente = ({ onClose, edit }) => {
+const Form_Frente = ({ onClose }) => {
   const [formData, setFormData] = useState({
     NOMBRE_FRENTE: "",
     LOGO_FRENTE:'',
     ACTIVO: "Activo",
   });
-
-  const addCandidate = () => {
-    const newCandidate = {
-      name: "",
-      cargo: "",
-    };
-    setFormData({
-      ...formData,
-      candidates: [...formData.candidates, newCandidate],
-    });
-  };
-
-  const handleCandidateChange = (e, index) => {
-    const { name, value } = e.target;
-    const updatedCandidates = [...formData.candidates];
-    updatedCandidates[index][name] = value;
-
-    setFormData({
-      ...formData,
-      candidates: updatedCandidates,
-    });
-  };
-
-  const removeCandidate = (index) => {
-    const updatedCandidates = [...formData.candidates];
-    updatedCandidates.splice(index, 1); // Elimina el candidato en la posición 'index'
-    setFormData({
-      ...formData,
-      candidates: updatedCandidates,
-    });
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
