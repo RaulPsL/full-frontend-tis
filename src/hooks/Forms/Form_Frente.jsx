@@ -105,7 +105,6 @@ const Form_Frente = ({ onClose }) => {
 
 Form_Frente.propTypes = {
   onClose: PropTypes.func.isRequired,
-  edit: PropTypes.bool.isRequired,
 };
 
 export default Form_Frente;

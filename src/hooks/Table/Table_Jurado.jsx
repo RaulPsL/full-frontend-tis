@@ -1,4 +1,4 @@
-import { Typography, Card, Avatar, CardContent, Container, Grid, Button, TableContainer, TableHead, TableCell, TableRow, TableBody } from '@mui/material';
+import { Typography, Card, Avatar, CardContent, Container, Grid, Button, TableContainer, TableHead, TableCell, TableRow, TableBody, Table } from '@mui/material';
 import DeleteIcon from "@mui/icons-material/Delete";
 import PropTypes from 'prop-types';
 
@@ -48,50 +48,86 @@ const ViewMesasEleccion = ({ convocatorias, nombre_convocatoria, jurados, change
                                         
                                         if(carrera.ID_CARRERA === mesa.ID_CARRERA){
                                           let i = 1;
-                                          return  <TableRow key={ indexM }>
-                                                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center',margin:"10px" }}>
-                                                              <TableCell>
-                                                                <Typography variant="h7" sx={{ width: '20%'}}>
-                                                                    {`Mesa numero ${i++}`}
-                                                                </Typography>
-                                                              </TableCell>
-                                                              <TableCell>
-                                                                <Typography variant="h7" sx={{ width: '20%'}}>
-                                                                    {mesa.RANGO_APELLIDOS}
-                                                                </Typography>
-                                                              </TableCell>
-                                                              <TableCell>
-                                                                {mesa.relacion_jurado.map(
-                                                                    (jurado, indexJ) => {
-                                                                      return <Card key={indexJ}>
-                                                                                <Avatar
-                                                                                src='https://picsum.photos/600/400'
-                                                                                alt=''
-                                                                                sx={{ height: 56, width: 56 }}
-                                                                                />
-                                                                                <Typography variant="h7" sx={{ width: '100%' ,marginLeft:2}}>
-                                                                                    {`${jurado.relacion_uj.NOMBRE_USUARIO} ${jurado.relacion_uj.APELLIDO_USUARIO}`}
-                                                                                </Typography>
-                                                                                <Typography variant="h7" sx={{ width: '100%' ,marginLeft:2}}>
-                                                                                    {jurado.relacion_uj.cargo.NOMBRE_CARGO}
-                                                                                </Typography>
-                                                                                <Typography variant="h7" sx={{ width: '100%' ,marginLeft:2}}>
-                                                                                    {jurado.CARGO}
-                                                                                </Typography>
-                                                                                <Typography variant="h7" sx={{ width: '100%' ,marginLeft:2}}>
-                                                                                    {jurado.relacion_uj.CI_USUARIO}
-                                                                                </Typography>
-                                                                                <Button size="sm" variant="soft" color="danger" onClick={ () => changeJurado(jurado.ID_JURADO) }>
+
+                                          return  <div key={indexM} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center',margin:"10px" }}>
+                                                    <TableContainer>
+                                                      <Table>
+                                                        <TableHead>
+                                                          <TableRow>
+                                                            <TableCell>Mesa</TableCell>
+                                                            <TableCell>Rango de Apellidos</TableCell>
+                                                            <TableCell>Jurados</TableCell>
+                                                          </TableRow>
+                                                        </TableHead>
+                                                        <TableBody>
+                                                          <TableCell>
+                                                            <Typography variant="h7" sx={{ width: '20%'}}>
+                                                                {`Mesa numero ${i++}`}
+                                                            </Typography>
+                                                          </TableCell>
+                                                          <TableCell>
+                                                            <Typography variant="h7" sx={{ width: '20%'}}>
+                                                                {mesa.RANGO_APELLIDOS}
+                                                            </Typography>
+                                                          </TableCell>
+                                                          <TableCell>
+                                                          {mesa.relacion_jurado.map(
+                                                              (jurado, indexJ) => {
+                                                                return <Card key={indexJ}>
+                                                                          <Avatar
+                                                                          src='https://picsum.photos/600/400'
+                                                                          alt=''
+                                                                          sx={{ height: 56, width: 56 }}
+                                                                          />
+                                                                          <TableContainer>
+                                                                            <Table>
+                                                                              <TableHead>
+                                                                                <TableRow>
+                                                                                  <TableCell>Nombre Jurado</TableCell>
+                                                                                  <TableCell>Cargo jurado</TableCell>
+                                                                                  <TableCell>Cargo</TableCell>
+                                                                                  <TableCell>CI</TableCell>
+                                                                                  <TableCell></TableCell>
+                                                                                </TableRow>
+                                                                              </TableHead>
+                                                                            </Table>
+                                                                          </TableContainer>
+                                                                          <TableBody>
+                                                                            <TableCell>
+                                                                            <Typography variant="h7" sx={{ width: '100%' ,marginLeft:2}}>
+                                                                                {`${jurado.relacion_uj.NOMBRE_USUARIO} ${jurado.relacion_uj.APELLIDO_USUARIO}`}
+                                                                            </Typography>
+                                                                            </TableCell>
+                                                                            <TableCell>
+                                                                            <Typography variant="h7" sx={{ width: '100%' ,marginLeft:2}}>
+                                                                                {jurado.relacion_uj.cargo.NOMBRE_CARGO}
+                                                                            </Typography>
+                                                                            </TableCell>
+                                                                            <TableCell>
+                                                                            <Typography variant="h7" sx={{ width: '100%' ,marginLeft:2}}>
+                                                                                {jurado.CARGO}
+                                                                            </Typography>
+                                                                            </TableCell>
+                                                                            <TableCell>
+                                                                            <Typography variant="h7" sx={{ width: '100%' ,marginLeft:2}}>
+                                                                                {jurado.relacion_uj.CI_USUARIO}
+                                                                            </Typography>
+                                                                            </TableCell>
+                                                                            <TableCell>
+                                                                            <Button size="sm" variant="soft" color="danger" onClick={ () => changeJurado(jurado.ID_JURADO) }>
                                                                                   <DeleteIcon fontSize="inherit" /> 
                                                                                 </Button>
-                                                                              </Card>
-                                                                      
-                                                                    }
-                                                                  )}
-                                                              </TableCell>
-                                                            </div>
-                                                  </TableRow>
-                                            
+                                                                            </TableCell>
+                                                                          </TableBody>
+                                                                        </Card>
+                                                                
+                                                              }
+                                                            )}
+                                                          </TableCell>
+                                                        </TableBody>
+                                                      </Table>
+                                                    </TableContainer>
+                                                  </div>
                                         }
                                       })
                                     }
