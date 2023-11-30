@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const getApi = async (route) => {
   try {
-    const response = await axios.get(`http://127.0.0.1:8000/api/v1/${route}`);
+    const response = await axios.get(`http://softcode.tis.cs.umss.edu.bo/api/v1/${route}`);
 
     return response.data;
   } catch (error) {
@@ -18,7 +18,7 @@ export const getApi = async (route) => {
 export const getApiUsuarios = async () => {
   try {
     const response = await axios.get(
-      `http://localhost:8000/api/usuarios`
+      `http://softcode.tis.cs.umss.edu.bo/api/usuarios`
     );
 
     return response.data;
@@ -35,7 +35,7 @@ export const getApiUsuarios = async () => {
 export const getApiEstudiantes = async () => {
   try {
     const response = await axios.get(
-      `http://localhost:8000/api/estudiantes`
+      `http://softcode.tis.cs.umss.edu.bo/api/estudiantes`
     );
 
     return response.data;
@@ -52,7 +52,7 @@ export const getApiEstudiantes = async () => {
 export const getApiDocentes = async () => {
   try {
     const response = await axios.get(
-      `http://localhost:8000/api/docentes`
+      `http://softcode.tis.cs.umss.edu.bo/api/docentes`
     );
 
     return response.data;
@@ -69,7 +69,7 @@ export const getApiDocentes = async () => {
 export const getApiFac = async () => {
   try {
     const response = await axios.get(
-      `http://localhost:8000/api/facultades`
+      `http://softcode.tis.cs.umss.edu.bo/api/facultades`
     );
 
     return response.data;
@@ -86,7 +86,7 @@ export const getApiFac = async () => {
 export const getApiFrente = async () => {
   try {
     const response = await axios.get(
-      `http://localhost:8000/api/frentes`
+      `http://softcode.tis.cs.umss.edu.bo/api/frentes`
     );
 
     return response.data;
@@ -103,7 +103,7 @@ export const getApiFrente = async () => {
 export const getApiElecc = async () => {
   try {
     const response = await axios.get(
-      `http://localhost:8000/api/elecciones`
+      `http://softcode.tis.cs.umss.edu.bo/api/elecciones`
     );
 
     return response.data;
@@ -120,7 +120,7 @@ export const getApiElecc = async () => {
 export const getApiConv = async () => {
   try {
     const response = await axios.get(
-      `http://localhost:8000/api/convocatorias`
+      `http://softcode.tis.cs.umss.edu.bo/api/convocatorias`
     );
 
     return response.data;
@@ -137,7 +137,7 @@ export const getApiConv = async () => {
 export const getApiJurado = async () => {
   try {
     const response = await axios.get(
-      `http://localhost:8000/api/mesas`
+      `http://softcode.tis.cs.umss.edu.bo/api/mesas`
     );
 
     return response.data;
@@ -155,7 +155,7 @@ export const getApiJurado = async () => {
 export const putApiUsuarioCand = async (request) => {
   try {
     const response = await axios.put(
-      `http://localhost:8000/api/putusuario`,
+      `http://softcode.tis.cs.umss.edu.bo/api/putusuario`,
       request
     );
 
@@ -169,7 +169,7 @@ export const putApiUsuarioCand = async (request) => {
 export const postProduct = async (route, formData) => {
   try {
     const response = await axios.post(
-      `http://127.0.0.1:8000/api/v1/${route}`,
+      `http://softcode.tis.cs.umss.edu.bo/api/v1/${route}`,
       formData,
       {
         headers: {
@@ -193,7 +193,7 @@ export const postProduct = async (route, formData) => {
 export const postCandidatos = async (route, formData) => {
   try {
     const response = await axios.post(
-      `http://127.0.0.1:8000/api/postcandidato`,
+      `http://softcode.tis.cs.umss.edu.bo/api/postcandidato`,
       formData, // JSON data
       {
         headers: {
@@ -217,7 +217,7 @@ export const postCandidatos = async (route, formData) => {
 export const postConv = async (route, formData) => {
   try {
     const response = await axios.post(
-      `http://127.0.0.1:8000/api/postconvocatorias`,
+      `http://softcode.tis.cs.umss.edu.bo/api/postconvocatorias`,
       formData, // JSON data
       {
         headers: {
@@ -241,7 +241,7 @@ export const postConv = async (route, formData) => {
 export const postEleccion = async (route, formData) => {
   try {
     const response = await axios.post(
-      `http://127.0.0.1:8000/api/posteleccion`,
+      `http://softcode.tis.cs.umss.edu.bo/api/posteleccion`,
       formData, // JSON data
       {
         headers: {
@@ -265,7 +265,7 @@ export const postEleccion = async (route, formData) => {
 export const postFrente = async (route, formData) => {
   try {
     const response = await axios.post(
-      `http://127.0.0.1:8000/api/postfrente`,
+      `http://softcode.tis.cs.umss.edu.bo/api/postfrente`,
       formData, // JSON data
       {
         headers: {
@@ -283,7 +283,7 @@ export const postFrente = async (route, formData) => {
 export const postJurado = async (route, formData) => {
   try {
     const response = await axios.post(
-      `http://127.0.0.1:8000/api/randomJurado`,
+      `http://softcode.tis.cs.umss.edu.bo/api/randomJurado`,
       formData, // JSON data
       {
         headers: {
@@ -301,7 +301,25 @@ export const postJurado = async (route, formData) => {
 export const postMiembro = async (route, formData) => {
   try {
     const response = await axios.post(
-      `http://127.0.0.1:8000/api/postmiembrocomite`,
+      `http://softcode.tis.cs.umss.edu.bo/api/postmiembrocomite`,
+      formData, // JSON data
+      {
+        headers: {
+          "Content-Type": "application/json", // Set the content type to JSON
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error al guardar el producto:", error);
+    throw error;
+  }
+};
+
+export const putEditJurado = async (route, id, formData) => {
+  try {
+    const response = await axios.post(
+      `http://softcode.tis.cs.umss.edu.bo/api/modifyJurado/${id}`,
       formData, // JSON data
       {
         headers: {
@@ -319,7 +337,7 @@ export const postMiembro = async (route, formData) => {
 export const putEditMiembro = async (route, id, formData) => {
   try {
     const response = await axios.post(
-      `http://127.0.0.1:8000/api/postmiembrocomite/${id}`,
+      `http://softcode.tis.cs.umss.edu.bo/api/postmiembrocomite/${id}`,
       formData, // JSON data
       {
         headers: {
@@ -337,7 +355,7 @@ export const putEditMiembro = async (route, id, formData) => {
 export const deleteJurado = async (id) => {
   try {
     const response = await axios.delete(
-      `http://127.0.0.1:8000/api/deletejurado/${id}`,
+      `http://softcode.tis.cs.umss.edu.bo/api/deletejurado/${id}`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -354,7 +372,7 @@ export const deleteJurado = async (id) => {
 export const deleteMiembro = async (id) => {
   try {
     const response = await axios.delete(
-      `http://127.0.0.1:8000/api/deletemiembro/${id}`,
+      `http://softcode.tis.cs.umss.edu.bo/api/deletemiembro/${id}`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -371,7 +389,7 @@ export const deleteMiembro = async (id) => {
 export const putConvFrente = async (route, id, formData) => {
   try {
     const response = await axios.put(
-      `http://127.0.0.1:8000/api/updatefrente/${id}`,
+      `http://softcode.tis.cs.umss.edu.bo/api/updatefrente/${id}`,
       formData, // JSON data
       {
         headers: {
@@ -420,6 +438,7 @@ export const deleteApi = async (productId) => {
     throw error;
   }
 };
+
 export const putApi = async (route, productId, formData) => {
   try {
     const response = await axios.put(
@@ -443,7 +462,7 @@ export const boletaPDF = async () => {
   try {
     const a = document.createElement('a');
     //a.href = `${import.meta.env.VITE_BACKEND_PRODUCT}/generarBoleta`;
-    a.href = 'http://localhost:8000/api/generar-boleta';
+    a.href = 'http://softcode.tis.cs.umss.edu.bo/api/generar-boleta';
     a.target = '_blank';
     a.download = 'boleta.pdf';
     a.click();
