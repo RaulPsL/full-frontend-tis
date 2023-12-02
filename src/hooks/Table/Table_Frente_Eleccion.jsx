@@ -69,7 +69,7 @@ export default function TableProducts({ frentes }) {
             <tr>
               <th style={{ width: 30 }}>#</th>
               <th style={{ width: 200 }}>Eleccion</th>
-              <th style={{ width: 150 }}>Candidato</th>
+              <th style={{ width: 150 }}>Candidatos</th>
               <th style={{ width: 150 }}>Frente</th>
 
               <th
@@ -79,12 +79,16 @@ export default function TableProducts({ frentes }) {
             </tr>
           </thead>
           <tbody>
-            {frentes.map((frente) => (
-              frente.relacion_elecc_frente.map((row,index)=>(
-                  <tr key={index}>
+            {frentes.map((frente, index) => (
+              <tr key={index}>
                   <td>{index + 1}</td>
 
-                  <td>{row.eleccion.TIPO_ELECCION}</td>
+                  <td>
+                  {
+                    frente.relacion_elecc_frente.map((row)=>(
+                      `${row.eleccion.TIPO_ELECCION}, `))
+                  }
+                  </td>
                   <td>{"Lista de candidatos"}</td>
                   <td>{frente.NOMBRE_FRENTE}</td>
 
@@ -110,8 +114,7 @@ export default function TableProducts({ frentes }) {
                       </Button>
                     </Box>
                   </td>
-                </tr> 
-              ))
+                </tr>
             ))}
           </tbody>
         </Table>
