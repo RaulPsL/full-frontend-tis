@@ -14,55 +14,53 @@ import { Box, Button } from "@mui/material";
 import { postJurado } from "../../api/api";
 
 const Form_Jurado = ({ convocatorias }) => {
-  const [convocatoria, setConvocatoria] = useState({});
-  const [num_participantes, setNum_participantes] = useState(0);
+  const [numparticipantes, setNumParticipantes] = useState(0);
   const [cantidadMesas, setCantidadMesas] = useState(0);
+  const [selectedconvocatoria, setSelectedConvocatoria] = useState({});
+  let selectedValue = 0;
 
+  const handleNumeroParticipantes = (e) => {
+    selectedValue = parseInt(e.target.value);
+    setNumParticipantes(selectedValue);
+    console.log(numparticipantes);
+    console.log(selectedconvocatoria);
+  }
 
   const handleCantidadMesasChange = (e) => {
-    const selectedValue = parseInt(e.target.value, 10);
+    selectedValue = parseInt(e.target.value);
     setCantidadMesas(selectedValue);
+    console.log(cantidadMesas);
   };
 
   const handleConvocatoriaChange = (e) => {
-    console.log(convocatorias);
-    const selected = convocatorias.find((convocatoria) => convocatoria.NOMBRE_CONVOCATORIA === e.target.value);
-    setConvocatoria(selected);
-    console.log(selected);
-    console.log(convocatoria);
-  };
-
-  const handleNumeroParticipantes = (e) => {
-    const num = parseInt(e.target.value);
-    setNum_participantes(num);
-    console.log(num_participantes);
+    selectedValue = convocatorias.find((convocatoria) => convocatoria.NOMBRE_CONVOCATORIA === e.target.value);
+    setSelectedConvocatoria(selectedValue);
+    console.log(selectedconvocatoria);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    let data = {
-      ID_CONVOCATORIA: convocatoria.ID_CONVOCATORIA,
-      cantidad: cantidadMesas,
-      cantidad_usuarios: num_participantes,
-      relacion_fc: convocatoria.relacion_fc.map(
-        (relacion)=> {
-          return {
-            ID_FACULTAD: relacion.ID_FACULTAD,
-            facultad: {
-              ID_FACULTAD: relacion.facultad.ID_FACULTAD,
-              carrera: relacion.facultad.carrera.map(
-                (carrera) => {
-                  return {
+    let send = {
+      ID_CONVOCATORIA:selectedconvocatoria.ID_CONVOCATORIA,
+      cantidad:cantidadMesas,
+      participantes:numparticipantes,
+      relacion_fc:selectedconvocatoria.relacion_fc.map(
+        (facultad) => (
+          {
+            facultad:{
+              ID_FACULTAD:facultad.facultad.ID_FACULTAD,
+              carrera:facultad.facultad.carrera.map(
+                (carrera) => (
+                  {
                     ID_CARRERA:carrera.ID_CARRERA
-                  }})
+                  }
+                ))
             }
           }
-        }
-      )
+        ))
     }
-    console.log(data);
-    data = JSON.stringify(data);
-    postJurado('', data);
+    console.log("Data to send: ", send);
+    postJurado('', send);
   };
 
   return (
@@ -81,38 +79,40 @@ const Form_Jurado = ({ convocatorias }) => {
             <Grid container spacing={2}>
               <Grid item xs={12} sm={12} md={12} lg={12}>
                 <Box sx={{ mt: 2, marginBottom: 2 }}>
-                  <FormControl fullWidth variant="outlined">
-                    <InputLabel htmlFor="facultad">Convocatotrias</InputLabel>
-                    <Select
-                      required
-                      label="Convocatoria"
-                      name="Convocatoria"
-                      value={ convocatoria !== null ? convocatoria.NOMBRE_CONVOCATORIA:"" }
-                      onChange={ (e) => handleConvocatoriaChange(e)}
-                    >
-                      {
-                        convocatorias.map((convocatoria, keyConv) => (
-                          <MenuItem key={ keyConv } value={convocatoria.NOMBRE_CONVOCATORIA}>
-                            {convocatoria.NOMBRE_CONVOCATORIA}
-                          </MenuItem>
-                        ))
-                      }
-                    </Select>
-                  </FormControl>
-                </Box>
-                <Box sx={{ mt: 2, marginBottom: 2 }}>
-                  <FormControl fullWidth variant="outlined">
-                    <InputLabel htmlFor="facultad">Numero de participantes</InputLabel>
-                    <Input
-                      required
-                      label="Convocatoria"
-                      name="Convocatoria"
-                      value={num_participantes ? num_participantes : null}
-                      onChange={handleNumeroParticipantes}
-                    >
-                    </Input>
-                  </FormControl>
-                </Box>
+                <FormControl fullWidth variant="outlined">
+                  <InputLabel htmlFor="facultad">Convocatorias</InputLabel>
+                  <Select
+                    required
+                    label="Convocatorias"
+                    name="facultad"
+                    value={selectedconvocatoria ? selectedconvocatoria.NOMBRE_CONVOCATORIA:""}
+                    onChange={handleConvocatoriaChange}
+                    inputProps={{
+                      name: "facultad",
+                      id: "facultad",
+                    }}
+                  >
+                    { convocatorias.map((convocatoria, keyCon) => (
+                      <MenuItem key={ keyCon} value= {convocatoria.NOMBRE_CONVOCATORIA}>
+                        { convocatoria.NOMBRE_CONVOCATORIA}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Box>
+
+              <Box sx={{ mt: 2, marginBottom: 2 }}>
+                <FormControl fullWidth variant="outlined">
+                  <InputLabel htmlFor="carrera">Numero de Participantes</InputLabel>
+                  <Input
+                    required
+                    label="Numero de Participantes"
+                    name="num"
+                    value={numparticipantes}
+                    onChange={handleNumeroParticipantes}
+                  />
+                </FormControl>
+              </Box>
                 <Box sx={{ display: "flex", alignItems: "center" }}>
                   <FormControl fullWidth variant="outlined">
                     <InputLabel htmlFor="cantidadMesas">
@@ -122,10 +122,9 @@ const Form_Jurado = ({ convocatorias }) => {
                       required
                       label="Cantidad de Mesas"
                       name="cantidadMesas"
-                      value={cantidadMesas ? cantidadMesas : null}
+                      value={cantidadMesas}
                       onChange={handleCantidadMesasChange}
-                    >
-                    </Input>
+                    />
                   </FormControl>
                 </Box>
               </Grid>
@@ -142,7 +141,7 @@ const Form_Jurado = ({ convocatorias }) => {
               variant="contained"
               color="primary"
             >
-              { "Crear Elección" }
+              {"Crear Jurados"}
             </Button>
           </form>
         </Box>
@@ -151,8 +150,9 @@ const Form_Jurado = ({ convocatorias }) => {
   );
 };
 
+
 export default Form_Jurado;
 
 Form_Jurado.propTypes = {
-  convocatorias: PropTypes.array.isRequired,
+  convocatorias: PropTypes.array.isRequired
 };

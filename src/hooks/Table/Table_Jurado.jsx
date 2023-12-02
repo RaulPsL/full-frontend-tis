@@ -1,7 +1,8 @@
-import { Typography, Card, Avatar, CardContent, Container, Grid, TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
+import { Typography, Card, CardContent, Container, Grid, Button, TableContainer, TableHead, TableCell, TableRow, TableBody, Table } from '@mui/material';
+import DeleteIcon from "@mui/icons-material/Delete";
 import PropTypes from 'prop-types';
 
-const ViewMesasEleccion = ({ convocatorias, nombre_convocatoria, jurados }) => {
+const ViewMesasEleccion = ({ convocatorias, nombre_convocatoria, jurados, changeJurado }) => {
 
   return (
     <Container>
@@ -32,13 +33,15 @@ const ViewMesasEleccion = ({ convocatorias, nombre_convocatoria, jurados }) => {
                                   >
                                     {carrera.NOMBRE_CARRERA}
                                   </Typography>
-                                  
+                                  <TableContainer>
+                                  <TableBody>
                                   <CardContent >
                                     {
                                       jurados.map((mesa, indexM) => {
                                         
                                         if(carrera.ID_CARRERA === mesa.ID_CARRERA){
                                           let i = 1;
+
                                           return  <div key={indexM} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center',margin:"10px" }}>
                                                     <TableContainer>
                                                       <Table>
@@ -64,43 +67,48 @@ const ViewMesasEleccion = ({ convocatorias, nombre_convocatoria, jurados }) => {
                                                           {mesa.relacion_jurado.map(
                                                               (jurado, indexJ) => {
                                                                 return <Card key={indexJ}>
-                                                                          <Avatar
-                                                                          src='https://picsum.photos/600/400'
-                                                                          alt=''
-                                                                          sx={{ height: 56, width: 56 }}
-                                                                          />
                                                                           <TableContainer>
                                                                             <Table>
                                                                               <TableHead>
                                                                                 <TableRow>
                                                                                   <TableCell>Nombre Jurado</TableCell>
-                                                                                  <TableCell>Cargo jurado</TableCell>
                                                                                   <TableCell>Cargo</TableCell>
+                                                                                  <TableCell>Cargo jurado</TableCell>
                                                                                   <TableCell>CI</TableCell>
+                                                                                  <TableCell>Cambiar</TableCell>
                                                                                 </TableRow>
                                                                               </TableHead>
                                                                             </Table>
                                                                           </TableContainer>
                                                                           <TableBody>
                                                                             <TableCell>
-                                                                            <Typography variant="h7" sx={{ width: '100%' ,marginLeft:2}}>
+                                                                            <Typography variant="h7" sx={{ width: '90%'}}>
                                                                                 {`${jurado.relacion_uj.NOMBRE_USUARIO} ${jurado.relacion_uj.APELLIDO_USUARIO}`}
                                                                             </Typography>
                                                                             </TableCell>
                                                                             <TableCell>
-                                                                            <Typography variant="h7" sx={{ width: '100%' ,marginLeft:2}}>
+                                                                            <Typography variant="h7" sx={{ width: '90%'}}>
                                                                                 {jurado.relacion_uj.cargo.NOMBRE_CARGO}
                                                                             </Typography>
                                                                             </TableCell>
                                                                             <TableCell>
-                                                                            <Typography variant="h7" sx={{ width: '100%' ,marginLeft:2}}>
+                                                                            <Typography variant="h7" sx={{ width: '90%'}}>
                                                                                 {jurado.CARGO}
                                                                             </Typography>
                                                                             </TableCell>
                                                                             <TableCell>
-                                                                            <Typography variant="h7" sx={{ width: '100%' ,marginLeft:2}}>
+                                                                            <Typography variant="h7" sx={{ width: '90%'}}>
                                                                                 {jurado.relacion_uj.CI_USUARIO}
                                                                             </Typography>
+                                                                            </TableCell>
+                                                                            <TableCell>
+                                                                                <Button 
+                                                                                  size="sm" 
+                                                                                  variant="soft" 
+                                                                                  color="danger" 
+                                                                                  onClick={ () => changeJurado({ CARGO:jurado.CARGO }, jurado.ID_JURADO) }>
+                                                                                      <DeleteIcon fontSize="inherit" />
+                                                                                </Button>
                                                                             </TableCell>
                                                                           </TableBody>
                                                                         </Card>
@@ -112,11 +120,12 @@ const ViewMesasEleccion = ({ convocatorias, nombre_convocatoria, jurados }) => {
                                                       </Table>
                                                     </TableContainer>
                                                   </div>
-                                            
                                         }
                                       })
                                     }
                                   </CardContent>
+                                </TableBody>
+                                </TableContainer>
                                 </Card>
                               </Grid>)
                             })}
@@ -134,6 +143,7 @@ ViewMesasEleccion.propTypes = {
   convocatorias: PropTypes.array.isRequired,
   nombre_convocatoria: PropTypes.string.isRequired,
   jurados: PropTypes.array.isRequired,
+  changeJurado: PropTypes.func.isRequired
 }
 
 export default ViewMesasEleccion;

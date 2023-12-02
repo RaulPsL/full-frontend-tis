@@ -2,12 +2,12 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
-  Navigate,
+  // Navigate,
 } from "react-router-dom";
 import HomeClient from "../pages/Client/Home/Page";
 
 import HomeAdmin from "../pages/Admin/Home/Page";
-import { useAuth0 } from "@auth0/auth0-react";
+// import { useAuth0 } from "@auth0/auth0-react";
 //import Login from "../auth/Login";
 //import Cookies from "js-cookie";
 import Convocatoria from "../pages/Admin/Convocatoria/Page";
@@ -24,9 +24,10 @@ import Jurado from "../pages/Client/Jurado/Page";
 import Comite from "../pages/Client/Comite/Page";
 import Convocatorias from "../pages/Client/Convocatorias/Page";
 import Habilitados from "../pages/Client/Habilidatos/Page";
+import MapaComponent from "../pages/Mapa/Page";
 export const AppRouter = () => {
   //const authToken = Cookies.get("token");
-  const isAuthenticated = useAuth0();
+  // const isAuthenticated = useAuth0();
   return (
     <Router>
       <Routes>
@@ -38,67 +39,134 @@ export const AppRouter = () => {
         {/**/}
         <Route
           path="/admin/eleccion"
-          element={isAuthenticated ? <Page_Eleccion /> : <Navigate to="/" />}
+          element={
+            // isAuthenticated ? 
+            <Page_Eleccion /> 
+            // : <Navigate to="/" />
+            }
         />
         <Route
           path="/admin/eleccion/create"
-          element={isAuthenticated ? <Create_Eleccion /> : <Navigate to="/" />}
+          element={
+            // isAuthenticated ? 
+            <Create_Eleccion /> 
+            // : <Navigate to="/" />
+            }
         />
         <Route
           path="/admin/convocatoria"
-          element={isAuthenticated ? <Convocatoria /> : <Navigate to="/" />}
+          element={
+            // isAuthenticated ? 
+            <Convocatoria /> 
+            // : <Navigate to="/" />
+            }
         />
         <Route path="/admin" element={<HomeAdmin />} />
         <Route
           path="/admin/elecc"
-          element={isAuthenticated ? <Page_elecc /> : <Navigate to="/" />}
+          element={
+            // isAuthenticated ? 
+            <Page_elecc /> 
+            // : <Navigate to="/" />
+            }
         />
         <Route
           path="/admin/frente"
-          element={isAuthenticated ? <Page_Frente /> : <Navigate to="/" />}
+          element={
+            // isAuthenticated ? 
+            <Page_Frente /> 
+            // : <Navigate to="/" />
+            }
+        />
+        <Route
+          path="/admin/frente"
+          element={
+            // isAuthenticated ? 
+            <Page_Frente /> 
+            // : <Navigate to="/" />
+            }
         />
         <Route
           path="/admin/comite"
-          element={isAuthenticated ? <Page_Comite /> : <Navigate to="/" />}
+          element={
+            // isAuthenticated ? 
+            <Page_Comite /> 
+            // : <Navigate to="/" />
+            }
         />
         <Route
           path="/admin/comite/create"
-          element={isAuthenticated ? <Create_Comite /> : <Navigate to="/" />}
+          element={
+            // isAuthenticated ? 
+            <Create_Comite /> 
+            // : <Navigate to="/" />
+            }
         />
         <Route
           path="/Admin/participantes/Docentes"
-          element={isAuthenticated ? <Page_Docentes /> : <Navigate to="/" />}
+          element={
+            // isAuthenticated ? 
+            <Page_Docentes /> 
+            // : <Navigate to="/" />
+            }
         />
         <Route
           path="/Admin/participantes/Estudiantes"
-          element={isAuthenticated ? <Page_Estudiantes /> : <Navigate to="/" />}
+          element={
+            // isAuthenticated ? 
+            <Page_Estudiantes /> 
+            // : <Navigate to="/" />
+            }
         />
         <Route
           path="/Admin/participantes/Jurado"
-          element={isAuthenticated ? <Page_Mesa /> : <Navigate to="/" />}
-        />
-        <Route
-          path="/convocatorias"
-          element={<Convocatorias /> }
-        />
-        <Route path="/admin" element={<HomeAdmin />} />
-        <Route
-          path="/comite"
-          element={<Comite /> }
+          element={
+            // isAuthenticated ? 
+            <Page_Mesa /> 
+            // : <Navigate to="/" />
+            }
         />
         <Route
           path="/jurado"
-          element={<Jurado /> }
+          element={
+            // isAuthenticated ? 
+            <Jurado /> 
+            // : <Navigate to="/" />
+            }
+        />
+        <Route
+          path="/comite"
+          element={
+            // isAuthenticated ? 
+            <Comite /> 
+            // : <Navigate to="/" />
+            }
         />
         <Route
           path="/habilitados"
-          element={<Habilitados /> }
+          element={
+            // isAuthenticated ? 
+            <Habilitados /> 
+            // : <Navigate to="/" />
+            }
         />
         <Route
-          path="/admin/comite"
-          element={isAuthenticated ? <Page_Comite /> : <Navigate to="/" />}
+          path="/convocatorias"
+          element={
+            // isAuthenticated ? 
+            <Convocatorias /> 
+            // : <Navigate to="/" />
+            }
         />
-      </Routes>
+        <Route
+          path="/MapaMesas"
+          element={
+            // isAuthenticated ? 
+            <MapaComponent /> 
+            // : <Navigate to="/" />
+            }
+        />
+        </Routes>
     </Router>
   );
 };

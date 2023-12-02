@@ -17,8 +17,9 @@ import {
   TableHead,
   TableRow,
   Paper,
-  RadioGroup,
-  Radio,
+  Checkbox,
+  FormControlLabel,
+  Collapse
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
@@ -32,61 +33,80 @@ import { getApiElecc, getApiFac, postConv } from "../../api/api";
 
 const Form_Convocatoria = ({ onClose, edit }) => {
   const [formData, setFormData] = useState({
-    name: "",
     dateB: null,
     dateE: null,
-    facultad: "",
     tipo: "",
     estado: "Activo",
-    relacion_fc:{}
+    relacion_fc:[],
+    relacion_cc:[]
   });
 
   const [requerimientos, setRequerimientos] = useState([]);
+  const [dirigido, setDirigido] = useState("");
   const [facultades, setfacultades] = useState([]);
-  const [facultad, setfacultad] = useState("");
   const [elecciones, setelecciones] = useState([]);
-  const [selectedFacultad, setSelectedFacultad] = useState("");
+  const [selectedFacultades, setSelectedFacultades] = useState([]);
   const [selectedCarreras, setSelectedCarreras] = useState([]);
-  const [test, settest] = useState(false);
   const [eleccion, seteleccion] = useState("");
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value } = e.target.value;
     setFormData({
       ...formData,
       [name]: value,
     });
-    
   };
 
-  const handleFacultadChange = (e) => {
-    e.preventDefault();
-    setfacultad(e.target.value);
-  }
+  const handleDirigidoChange = (e) => {
+    setDirigido(e.target.value);
+  };
 
-  const handleEleccionChange = (e) => {
-    e.preventDefault();
-    seteleccion(e.target.value);
-    
-  }
+  const handleChangeFacultad = (index, value) => {
+    const nuevasFacultades = [...selectedFacultades];
+    nuevasFacultades[index] = value;
+    setSelectedFacultades(nuevasFacultades);
+  };
 
-  const ObtenerCarreras = (e) => {
-    if(eleccion.toLocaleLowerCase() && facultad !== ""){
-      return (
-        <RadioGroup>
-          {/**
-          * {facultades.find((item) => item.NOMBRE_FACULTAD === facultad).carrera.map(
-          *  (carrera, keyCarr) => (
-          *    <RadioButton key={ keyCarr }>
-          *      carrera.NOMBRE_CARRERA
-          *    </RadioButton>
-          * )}
-          * )
-          */}
-        </RadioGroup>
+  const handleAgregarFacultad = () => {
+    setSelectedFacultades([...selectedFacultades, ""]);
+  };
+
+  const handleEliminarFacultad = (index) => {
+    const nuevasFacultades = [...selectedFacultades];
+    nuevasFacultades.splice(index, 1);
+    setSelectedFacultades(nuevasFacultades);
+  };
+
+  const handleCarrerasChange = (event, nombreCarrera) => {
+    const isChecked = event.target.checked;
+
+    if (isChecked) {
+      setSelectedCarreras((prevCarreras) => [
+        ...prevCarreras,
+        nombreCarrera,
+      ]);
+    } else {
+      setSelectedCarreras((prevCarreras) =>
+        prevCarreras.filter((carrera) => carrera !== nombreCarrera)
       );
     }
   }
+
+  const [drawerOpen, setDrawerOpen] = useState(false);
+
+  const toggleDrawer = () => {
+    setDrawerOpen(!drawerOpen);
+  };
+
+  const handleEleccionChange = (e) => {
+    setFormData({
+      ...formData,
+      tipo:e.target.value
+    });
+    console.log(formData);
+    seteleccion(e.target.value);
+  }
+
   const handleAgregarRequerimiento = () => {
     if (formData.nuevoRequerimiento) {
       setRequerimientos([...requerimientos, formData.nuevoRequerimiento]);
@@ -102,41 +122,63 @@ const Form_Convocatoria = ({ onClose, edit }) => {
     setRequerimientos(updatedRequerimientos);
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      // Preparar los datos que deseas enviar al backend
-      const dataToSend = {
-        ID_ELECCION : buscarIDE(formData.tipo),
-        FECHA_INI : formData.dateB,
-        FECHA_FIN : formData.dateE,
-        DIA_ELECCION : formData.dateB,
-        NOMBRE_CONVOCATORIA : formData.tipo.toUpperCase()+' '+formData.facultad,
-        ACTIVO : formData.estado,
-        URL_PDF_CONVOCATORIA : 'https://ejemplo.com/convocatoria.pdf',
-        relacion_fc : {
-          ID_FACULTAD: buscarIDF(formData.facultad),
-          ID_CONVOCATORIA: 'ID_CONVOCATORIA'
-        }
-      };
-      const value = JSON.stringify(dataToSend);
-      console.log(value);
-      postConv('', value);
-      onClose(); // Cerrar el formulario después de enviar los datos
-    } catch (error) {
-      console.error("Error sending data to API:", error);
-    }
-  };
-
   const buscarIDE = (param) => {
     const eleccion_encontrada = elecciones.find((item) => item.TIPO_ELECCION === param);
       return eleccion_encontrada ? eleccion_encontrada.ID_ELECCION : null;
   }
 
   const buscarIDF = (param) => {
-    const facultad_encontrada = facultades.find((item) => item.NOMBRE_FACULTAD === param);
-    return facultad_encontrada ? facultad_encontrada.ID_FACULTAD : null;
+    let ids_facultad = [];
+    facultades.forEach(item => {
+      param.forEach(facultad => {
+        if(item.NOMBRE_FACULTAD === facultad){
+          ids_facultad.push({
+            ID_FACULTAD:item.ID_FACULTAD
+          });
+        }
+      });
+    });
+    return ids_facultad;
   }
+
+  const buscarIDC = (param) => {
+    let ids_carrera = [];
+    facultades.forEach(item => {
+      item.carrera.forEach(carrera => {
+        param.forEach( nombreCarrera => {
+          if(carrera.NOMBRE_CARRERA === nombreCarrera){
+            ids_carrera.push({
+              ID_CARRERA:carrera.ID_CARRERA
+            });
+          }
+        })
+      })
+    });
+    return ids_carrera;
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const dataToSend = {
+        ID_ELECCION : buscarIDE(formData.tipo),
+        FECHA_INI : formData.dateB,
+        FECHA_FIN : formData.dateE,
+        DIA_ELECCION : formData.dateB,
+        NOMBRE_CONVOCATORIA : formData.tipo +' '+ dirigido,
+        ACTIVO : formData.estado,
+        URL_PDF_CONVOCATORIA : 'https://ejemplo.com/convocatoria.pdf',
+        relacion_fc : buscarIDF(selectedFacultades),
+        relacion_cc : buscarIDC(selectedCarreras)
+      };
+      const value = JSON.stringify(dataToSend);
+      console.log(value);
+      postConv('', value);
+      onClose();
+    } catch (error) {
+      console.error("Error sending data to API:", error);
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -166,6 +208,7 @@ const Form_Convocatoria = ({ onClose, edit }) => {
     const date = new Date(param);
     return `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDay()).padStart(2,'0')}`;
   }
+
   return (
     <Box
       sx={{
@@ -199,12 +242,8 @@ const Form_Convocatoria = ({ onClose, edit }) => {
                 required
                 label="Tipo de elección"
                 name="tipo"
-                value={formData.tipo}
+                value={eleccion}
                 onChange={handleEleccionChange}
-                inputProps={{
-                  name: "tipo",
-                  id: "tipo_eleccion",
-                }}
               >
                 {tiposEleccion.map((tipo, index) => (
                   <MenuItem key={index} value={tipo}>
@@ -222,6 +261,25 @@ const Form_Convocatoria = ({ onClose, edit }) => {
               <AddCircleRoundedIcon />
             </Button>
           </Box>
+          <FormControl
+            sx={{
+              width: 320,
+              marginTop: "10px",
+            }}
+          >
+            <InputLabel htmlFor="estado">Dirigido a</InputLabel>
+            <Select
+              required
+              name="Dirigido a"
+              value={dirigido}
+              onChange={handleDirigidoChange}
+              label="Nombre"
+            >
+              <MenuItem value="(Docentes)">Docentes</MenuItem>
+              <MenuItem value="(Estudiantes)">Estudiantes</MenuItem>
+              <MenuItem value="(Docente y Estudiantes)">Docente y Estudiantes</MenuItem>
+            </Select>
+          </FormControl>
           <FormControl
             sx={{
               width: 320,
@@ -261,28 +319,67 @@ const Form_Convocatoria = ({ onClose, edit }) => {
           </Box>
 
           <Box sx={{ mt: 2 }}>
-            <FormControl fullWidth variant="outlined">
-              <InputLabel htmlFor="facultad">Facultad</InputLabel>
-              <Select
-                required
-                label="Facultad"
-                name="facultad"
-                value={formData.facultad}
-                onChange={handleChange}
-                inputProps={{
-                  name: "facultad",
-                  id: "facultad",
-                }}
-              >
-                {facultades.map((facultad) => (
-                  <MenuItem key={facultad.NOMBRE_FACULTAD} value={facultad.NOMBRE_FACULTAD}>
-                    {facultad.NOMBRE_FACULTAD}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Box>
-
+            {selectedFacultades.map((facultad, index) => (
+              <Box key={index} sx={{ display: 'flex', flexDirection: 'column', mt: 2}}>
+                <FormControl fullWidth variant="outlined" sx={{ flexGrow: 1 }}>
+                  <InputLabel htmlFor={`facultad-${index}`}>Facultad</InputLabel>
+                  <Select
+                    required
+                    label="Facultad"
+                    name={`facultad-${index}`}
+                    value={facultad}
+                    onChange={(e) => handleChangeFacultad(index, e.target.value)}
+                  >
+                    {facultades.map((facultad) => (
+                        <MenuItem key={facultad.NOMBRE_FACULTAD} value={facultad.NOMBRE_FACULTAD}>
+                          {facultad.NOMBRE_FACULTAD}
+                        </MenuItem>
+                      ))}
+                  </Select>
+                </FormControl>
+                <Button
+                  onClick={() => handleEliminarFacultad(index)}
+                  variant="outlined"
+                  color="secondary"
+                  sx={{ ml: 2 }}
+                >
+                  <DeleteIcon />
+                </Button>
+                <Button onClick={toggleDrawer} variant="outlined">
+                    { drawerOpen ? "GUARDAR CARRERAS":"MOSTRAR CARRERAS"}
+                </Button>
+                <Collapse in={drawerOpen}>
+                  <Paper elevation={3} style={{ padding: '20px', marginTop: '10px' }}>
+                    {facultad && (
+                      <FormControl component="fieldset" sx={{ mt: 1 }}>
+                        {facultades.find(
+                          (item) => item.NOMBRE_FACULTAD === facultad).carrera.map(
+                            (carrera, key) => (
+                              <FormControlLabel
+                                key={key}
+                                control={
+                                  <Checkbox 
+                                    value={ carrera.NOMBRE_CARRERA }
+                                    onChange={ (e) =>  handleCarrerasChange(e, carrera.NOMBRE_CARRERA)} />
+                                  }
+                                label={carrera.NOMBRE_CARRERA}
+                              />)
+                        )}
+                      </FormControl>
+                    )}
+                  </Paper>
+                </Collapse>
+              </Box>
+            ))}
+        <Button
+          onClick={handleAgregarFacultad}
+          variant="contained"
+          color="primary"
+          sx={{ mt: 2 }}
+        >
+          Agregar Facultad
+        </Button>
+      </Box>
           <Box>
             <Typography align="center">Requerimientos</Typography>
             <Box sx={{ display: "flex", alignItems: "center" }}>

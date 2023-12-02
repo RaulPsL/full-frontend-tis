@@ -1,13 +1,14 @@
 import { useState, useEffect } from "react";
 import { Admin } from "../../../../components/layout/admin/Admin";
-import { Grid, MenuItem, Select, Typography } from "@mui/material";
+import { Button, Grid, MenuItem, Select, Typography } from "@mui/material";
 import { containerChartStyles } from "../../Home/utils/HomeStyles";
 import ButtonProducts from "../../../../hooks/utils/Button";
 
 import Drawer from "../../../../hooks/Drawer/Drawer";
-import { getApiConv, getApiJurado } from "../../../../api/api";
+import { getApiConv, getApiJurado, putEditJurado } from "../../../../api/api";
 import Form_Jurado from "../../../../hooks/Forms/Form_Jurado";
 import ViewMesasEleccion from "../../../../hooks/Table/Table_Jurado";
+import { Link } from "react-router-dom";
 
 const Page_Mesa = () => {
   const name = "Jurados y Mesas";
@@ -18,12 +19,12 @@ const Page_Mesa = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [edit, setedit] = useState(false);
   const [jurados, setJurados] = useState([]);
-  
-
   const [radio, setradio] = useState(false);
+  const [boton, setboton] = useState(false);
 
   const handleConvocatoriaChange = (event) => {
     setConvocatoria(event.target.value);
+    setboton(true);
   };
 
   const openDrawer = () => {
@@ -40,6 +41,11 @@ const Page_Mesa = () => {
   const handleChange = () => {
     setradio(!radio);
   };
+
+  const changeJurado = async (request, id_jurado) => {
+    let data = JSON.stringify(request);
+    putEditJurado(id_jurado, data);
+  }
   
   useEffect(() => {
     const fetchData = async () => {
@@ -68,6 +74,7 @@ const Page_Mesa = () => {
               >
                 {name}
               </Typography>
+
               <Select
                 value={convocatoria}
                 label="Seleccionar Convocatoria"
@@ -81,18 +88,36 @@ const Page_Mesa = () => {
                           </MenuItem>;
                 })}
               </Select>
-              <ButtonProducts
-                handleChange={handleChange}
-                openDrawer={openDrawer}
-                editFalse={editFalse}
-              />
+              <Grid container alignItems="center">
+                <Grid item>
+                  <ButtonProducts
+                    handleChange={handleChange}
+                    openDrawer={openDrawer}
+                    editFalse={editFalse}
+                  />
+                </Grid>
+                {boton ? (
+                  <Grid item>
+                    <Link to="/MapaMesas">
+                      <Button variant="outlined">
+                        {"MOSTRAR MAPA"}
+                      </Button>
+                    </Link>
+                  </Grid>
+                ) : null}
+              </Grid>
             </Grid>
           </Grid>
         </Grid>
         <Grid item xs={12} md={12} lg={12}>
           <Grid container style={containerChartStyles}>
             <Grid item xs={12}>
-              <ViewMesasEleccion convocatorias={ convocatorias } jurados={ jurados } nombre_convocatoria= { convocatoria } />
+              <ViewMesasEleccion 
+                convocatorias={ convocatorias } 
+                jurados={ jurados } 
+                nombre_convocatoria= { convocatoria }
+                changeJurado={ changeJurado }
+                />
             </Grid>
           </Grid>
         </Grid>
@@ -106,8 +131,7 @@ const Page_Mesa = () => {
           form={
             <Form_Jurado
               onClose={closeDrawer}
-              edit={edit}
-              convocatorias = { convocatorias }
+              convocatorias={ convocatorias }
             />
           }
         />
