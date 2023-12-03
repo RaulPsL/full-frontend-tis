@@ -93,6 +93,11 @@ function Header() {
                   Habilitados
                 </Button>
               </Link>
+              <Link to="/resultados">
+                <Button variant="text" sx={{ color: "white" }}>
+                  Resultados
+                </Button>
+              </Link>
             </Box>
 
             <Box

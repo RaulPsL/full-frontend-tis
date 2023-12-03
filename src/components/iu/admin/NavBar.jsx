@@ -159,6 +159,12 @@ const NavBar = ({ open, mode }) => {
               icon={<PeopleIcon />}
               onClick={handleLinkClick}
             />
+            <CustomListItem
+              to="/admin/votos"
+              text="Votos"
+              icon={<PeopleIcon />}
+              onClick={handleLinkClick}
+            />
           </List>
         )}
       </List>
