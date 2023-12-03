@@ -98,7 +98,7 @@ const Resultados = () => {
       html2canvas: { scale: 2 },
       jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
     };
-
+//errores
     const pdfObject = html2pdf(pdfContent, pdfOptions);
 
     pdfObject
