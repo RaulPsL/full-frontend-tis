@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const getApi = async (route) => {
   try {
-    const response = await axios.get(`http://localhost:8000/api/v1/${route}`);
+    const response = await axios.get(`http://localhost:8000/api/${route}`);
 
     return response.data;
   } catch (error) {
@@ -12,14 +12,12 @@ export const getApi = async (route) => {
 };
 
 /**
- * 
+ *
  * @returns lista de todos los usuarios de la base de datos
  */
 export const getApiUsuarios = async () => {
   try {
-    const response = await axios.get(
-      `http://localhost:8000/api/usuarios`
-    );
+    const response = await axios.get(`http://localhost:8000/api/usuarios`);
 
     return response.data;
   } catch (error) {
@@ -29,14 +27,12 @@ export const getApiUsuarios = async () => {
 };
 
 /**
- * 
+ *
  * @returns lista de todos los usuarios de la base de datos
  */
 export const getApiEstudiantes = async () => {
   try {
-    const response = await axios.get(
-      `http://localhost:8000/api/estudiantes`
-    );
+    const response = await axios.get(`http://localhost:8000/api/estudiantes`);
 
     return response.data;
   } catch (error) {
@@ -46,14 +42,12 @@ export const getApiEstudiantes = async () => {
 };
 
 /**
- * 
+ *
  * @returns lista de todos los usuarios de la base de datos
  */
 export const getApiDocentes = async () => {
   try {
-    const response = await axios.get(
-      `http://localhost:8000/api/docentes`
-    );
+    const response = await axios.get(`http://localhost:8000/api/docentes`);
 
     return response.data;
   } catch (error) {
@@ -63,14 +57,12 @@ export const getApiDocentes = async () => {
 };
 
 /**
- * 
+ *
  * @returns lista de todas las facultades registradas
  */
 export const getApiFac = async () => {
   try {
-    const response = await axios.get(
-      `http://localhost:8000/api/facultades`
-    );
+    const response = await axios.get(`http://localhost:8000/api/facultades`);
 
     return response.data;
   } catch (error) {
@@ -80,14 +72,12 @@ export const getApiFac = async () => {
 };
 
 /**
- * 
+ *
  * @returns lista de todos los frentes de la base de datos
  */
 export const getApiFrente = async () => {
   try {
-    const response = await axios.get(
-      `http://localhost:8000/api/frentes`
-    );
+    const response = await axios.get(`http://localhost:8000/api/frentes`);
 
     return response.data;
   } catch (error) {
@@ -97,14 +87,12 @@ export const getApiFrente = async () => {
 };
 
 /**
- * 
+ *
  * @returns lista de todas las convocatorias estas estan contenidas y ordenadas por el tipo de eleccion
  */
 export const getApiElecc = async () => {
   try {
-    const response = await axios.get(
-      `http://localhost:8000/api/elecciones`
-    );
+    const response = await axios.get(`http://localhost:8000/api/elecciones`);
 
     return response.data;
   } catch (error) {
@@ -114,14 +102,12 @@ export const getApiElecc = async () => {
 };
 
 /**
- * 
+ *
  * @returns lista de todas las convocatorias estas estan contenidas y ordenadas por el tipo de eleccion
  */
 export const getApiConv = async () => {
   try {
-    const response = await axios.get(
-      `http://localhost:8000/api/convocatorias`
-    );
+    const response = await axios.get(`http://localhost:8000/api/convocatorias`);
 
     return response.data;
   } catch (error) {
@@ -131,14 +117,12 @@ export const getApiConv = async () => {
 };
 
 /**
- * 
+ *
  * @returns lista de todos los jurados
  */
 export const getApiJurado = async () => {
   try {
-    const response = await axios.get(
-      `http://localhost:8000/api/mesas`
-    );
+    const response = await axios.get(`http://localhost:8000/api/mesas`);
 
     return response.data;
   } catch (error) {
@@ -148,8 +132,8 @@ export const getApiJurado = async () => {
 };
 
 /**
- * 
- * @param {objeto con el nombre de usuario y apellido del mismo para encontrar un usuario} request 
+ *
+ * @param {objeto con el nombre de usuario y apellido del mismo para encontrar un usuario} request
  * @returns en el front retona el usuario buscado para agregarlo como candidato
  */
 export const putApiUsuarioCand = async (request) => {
@@ -186,9 +170,9 @@ export const postProduct = async (route, formData) => {
 
 /**
  * Inserta en base de datos todos los candidatos masivamente
- * @param {no necesaria} route 
- * @param {objeto tipo json} formData 
- * @returns 
+ * @param {no necesaria} route
+ * @param {objeto tipo json} formData
+ * @returns
  */
 export const postCandidatos = async (route, formData) => {
   try {
@@ -210,9 +194,9 @@ export const postCandidatos = async (route, formData) => {
 
 /**
  * Inserta en base de datos una nueva convocatoria
- * @param {no necesaria} route 
- * @param {objeto tipo json} formData 
- * @returns 
+ * @param {no necesaria} route
+ * @param {objeto tipo json} formData
+ * @returns
  */
 export const postConv = async (route, formData) => {
   try {
@@ -234,9 +218,9 @@ export const postConv = async (route, formData) => {
 
 /**
  * Inserta en base de datos una nueva eleccion
- * @param {no necesaria} route 
- * @param {objeto tipo json} formData 
- * @returns 
+ * @param {no necesaria} route
+ * @param {objeto tipo json} formData
+ * @returns
  */
 export const postEleccion = async (route, formData) => {
   try {
@@ -258,9 +242,9 @@ export const postEleccion = async (route, formData) => {
 
 /**
  * Inserta en base de datos un nuevo frente
- * @param {no necesaria} route 
- * @param {objeto tipo json} formData 
- * @returns 
+ * @param {no necesaria} route
+ * @param {objeto tipo json} formData
+ * @returns
  */
 export const postFrente = async (route, formData) => {
   try {
@@ -405,11 +389,11 @@ export const putConvFrente = async (route, id, formData) => {
 };
 
 export const postApi = async (route, jsonData) => {
-  console.log(jsonData);
+  console.log("API", jsonData);
   try {
     const response = await axios.post(
-      `${import.meta.env.VITE_BACKEND_PRODUCT}/${route}`,
-      jsonData,
+      `http://localhost:8000/api/${route}`,
+      JSON.stringify(jsonData), // Convert jsonData to a JSON string
       {
         headers: {
           "Content-Type": "application/json",
@@ -418,7 +402,7 @@ export const postApi = async (route, jsonData) => {
     );
     return response.data;
   } catch (error) {
-    console.error("Error al iniciar sesion:", error);
+    console.error("Error al registrar los votos:", error);
     throw error;
   }
 };
@@ -439,18 +423,19 @@ export const deleteApi = async (productId) => {
   }
 };
 
-export const putApi = async (route, productId, formData) => {
+export const putApi = async (route, id, data) => {
+  console.log("PUT", route, id, data);
   try {
     const response = await axios.put(
-      `${import.meta.env.VITE_BACKEND_PRODUCT}/${route}/${productId}`,
-      formData,
+      `http://localhost:8000/api/${route}/${id}`,
+      data,
       {
         headers: {
-          "Content-Type": "multipart/form-data",
+          "Content-Type": "application/json",
         },
       }
     );
-    console.log("FormDATA: ", formData);
+    console.log("Data: ", data);
     return response.data;
   } catch (error) {
     console.error("Error al editar el producto:", error);
@@ -460,11 +445,11 @@ export const putApi = async (route, productId, formData) => {
 
 export const boletaPDF = async () => {
   try {
-    const a = document.createElement('a');
+    const a = document.createElement("a");
     //a.href = `${import.meta.env.VITE_BACKEND_PRODUCT}/generarBoleta`;
-    a.href = 'http://localhost:8000/api/generar-boleta';
-    a.target = '_blank';
-    a.download = 'boleta.pdf';
+    a.href = "http://localhost:8000/api/generar-boleta";
+    a.target = "_blank";
+    a.download = "boleta.pdf";
     a.click();
   } catch (error) {
     console.error("Error al visualizar el pdf", error);

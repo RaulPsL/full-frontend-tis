@@ -25,6 +25,8 @@ import Comite from "../pages/Client/Comite/Page";
 import Convocatorias from "../pages/Client/Convocatorias/Page";
 import Habilitados from "../pages/Client/Habilidatos/Page";
 import MapaComponent from "../pages/Mapa/Page";
+import Page_Votos from "../pages/Admin/Votos/Page";
+import Resultados from "../pages/Client/Resultados/Page";
 export const AppRouter = () => {
   //const authToken = Cookies.get("token");
   // const isAuthenticated = useAuth0();
@@ -40,133 +42,149 @@ export const AppRouter = () => {
         <Route
           path="/admin/eleccion"
           element={
-            // isAuthenticated ? 
-            <Page_Eleccion /> 
+            // isAuthenticated ?
+            <Page_Eleccion />
             // : <Navigate to="/" />
-            }
+          }
         />
         <Route
           path="/admin/eleccion/create"
           element={
-            // isAuthenticated ? 
-            <Create_Eleccion /> 
+            // isAuthenticated ?
+            <Create_Eleccion />
             // : <Navigate to="/" />
-            }
+          }
         />
         <Route
           path="/admin/convocatoria"
           element={
-            // isAuthenticated ? 
-            <Convocatoria /> 
+            // isAuthenticated ?
+            <Convocatoria />
             // : <Navigate to="/" />
-            }
+          }
         />
         <Route path="/admin" element={<HomeAdmin />} />
         <Route
           path="/admin/elecc"
           element={
-            // isAuthenticated ? 
-            <Page_elecc /> 
+            // isAuthenticated ?
+            <Page_elecc />
             // : <Navigate to="/" />
-            }
+          }
         />
         <Route
           path="/admin/frente"
           element={
-            // isAuthenticated ? 
-            <Page_Frente /> 
+            // isAuthenticated ?
+            <Page_Frente />
             // : <Navigate to="/" />
-            }
+          }
         />
         <Route
           path="/admin/frente"
           element={
-            // isAuthenticated ? 
-            <Page_Frente /> 
+            // isAuthenticated ?
+            <Page_Frente />
             // : <Navigate to="/" />
-            }
+          }
         />
         <Route
           path="/admin/comite"
           element={
-            // isAuthenticated ? 
-            <Page_Comite /> 
+            // isAuthenticated ?
+            <Page_Comite />
             // : <Navigate to="/" />
-            }
+          }
         />
         <Route
           path="/admin/comite/create"
           element={
-            // isAuthenticated ? 
-            <Create_Comite /> 
+            // isAuthenticated ?
+            <Create_Comite />
             // : <Navigate to="/" />
-            }
+          }
         />
         <Route
           path="/Admin/participantes/Docentes"
           element={
-            // isAuthenticated ? 
-            <Page_Docentes /> 
+            // isAuthenticated ?
+            <Page_Docentes />
             // : <Navigate to="/" />
-            }
+          }
         />
         <Route
           path="/Admin/participantes/Estudiantes"
           element={
-            // isAuthenticated ? 
-            <Page_Estudiantes /> 
+            // isAuthenticated ?
+            <Page_Estudiantes />
             // : <Navigate to="/" />
-            }
+          }
         />
         <Route
           path="/Admin/participantes/Jurado"
           element={
-            // isAuthenticated ? 
-            <Page_Mesa /> 
+            // isAuthenticated ?
+            <Page_Mesa />
             // : <Navigate to="/" />
-            }
+          }
         />
         <Route
           path="/jurado"
           element={
-            // isAuthenticated ? 
-            <Jurado /> 
+            // isAuthenticated ?
+            <Jurado />
             // : <Navigate to="/" />
-            }
+          }
         />
         <Route
           path="/comite"
           element={
-            // isAuthenticated ? 
-            <Comite /> 
+            // isAuthenticated ?
+            <Comite />
             // : <Navigate to="/" />
-            }
+          }
         />
         <Route
           path="/habilitados"
           element={
-            // isAuthenticated ? 
-            <Habilitados /> 
+            // isAuthenticated ?
+            <Habilitados />
             // : <Navigate to="/" />
-            }
+          }
         />
         <Route
           path="/convocatorias"
           element={
-            // isAuthenticated ? 
-            <Convocatorias /> 
+            // isAuthenticated ?
+            <Convocatorias />
             // : <Navigate to="/" />
-            }
+          }
         />
         <Route
           path="/MapaMesas"
           element={
-            // isAuthenticated ? 
-            <MapaComponent /> 
+            // isAuthenticated ?
+            <MapaComponent />
             // : <Navigate to="/" />
-            }
+          }
         />
-        </Routes>
+        <Route
+          path="/admin/votos"
+          element={
+            // isAuthenticated ?
+            <Page_Votos />
+            // : <Navigate to="/" />
+          }
+        />
+        <Route
+          path="/resultados"
+          element={
+           
+            <Resultados/>
+          
+          }
+        />
+      </Routes>
     </Router>
   );
 };
